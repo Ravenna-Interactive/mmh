@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+alpha:
+  name: MyString
+  position: 1
+  hunt: Two
+
+two:
+  name: MyString
+  position: 1
+  hunt: 

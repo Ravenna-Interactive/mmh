@@ -1,0 +1,42 @@
+<h2><%= @hunt.name %></h2>
+
+<div id="hunt_sidebar">
+  <h3>Waypoints</h3>
+  <%= link_to '+', [:new, @hunt, :waypoint], :title => 'Add Waypoint', :id => 'new_waypoint' %>  
+</div>
+
+<div id="hunt_map">
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  // by default let's center on the US
+  var map = new google.maps.Map($('hunt_map'), {
+    center: new google.maps.LatLng(37.23,-95.67),
+    zoom:4,
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  });
+  
+  var hunt = new Hunt(<%= @hunt.id %>, { map:map });
+  
+  var current_waypoint;
+  
+  $('new_waypoint').observe('click', function(e){
+    e.preventDefault();
+    if(!hunt.editing) hunt.startAddWayPoint();
+  });
+  
+  document.observe('keydown', function(e){
+    if (e.which == 65 && !hunt.editing) {
+      e.preventDefault();
+      hunt.startAddWayPoint();
+      hunt.closeWindow();
+    }else if(e.which == 27) {
+      if(hunt.editing) hunt.endAddWayPoint();
+      hunt.closeWindow();
+    }else if(e.which == 82){
+      hunt.fitMap();
+    }
+  })
+  
+  
+</script>

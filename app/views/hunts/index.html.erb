@@ -1,0 +1,9 @@
+<h2>Hunts</h2>
+<%= link_to 'Start New Hunt', :new_hunt %>
+<%- if @hunts.count > 0 -%>
+<ul>
+  <%- @hunts.each do |hunt| -%>
+  <li><%= link_to hunt.name, hunt %></li>
+  <%- end -%>
+</ul>
+<%- end -%>
