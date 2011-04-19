@@ -7,6 +7,10 @@ class Hunt < ActiveRecord::Base
   
   before_validation :auto_generate_name, :on => :create
   
+    def total_distance
+      Waypoint.select("sum(distance) as total_distance").where({:hunt_id => self.id}).first.total_distance
+    end
+  
   protected
   
     def auto_generate_name

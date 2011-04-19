@@ -5,6 +5,8 @@
   bottom:0;
   width:300px;
   background:#EEE;
+  font: 12px "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif;
+  overflow:auto;
 }
 
 #hunt_map {
@@ -13,4 +15,137 @@
   right:0;
   left:300px;
   bottom:0;
+}
+
+.waypoint {
+  padding:5px;
+  border-bottom:1px solid #CCC;
+  overflow:hidden;
+}
+
+
+#hunt_sidebar h2, #hunt_sidebar h3 {
+  border-bottom:1px solid #CCC;
+  margin:0;
+  padding:5px;
+  background:#E4E4E4;
+  font-weight:normal;
+}
+
+#hunt_sidebar h3 {
+  border-top:1px solid #CCC;
+}
+
+.hunt_meta {
+  padding:5px;
+}
+
+#hunt_sidebar .panel {
+  position:relative;
+}
+
+#new_waypoint {
+  position:absolute;
+  top:5px; right: 5px;
+  background:#CCC;
+  color:#FFF;
+  font-weight:bold;
+  text-decoration:none;
+  width: 18px;
+  text-align:center;
+  line-height: 18px;
+}
+
+#new_waypoint:hover {
+  background:#333;
+}
+
+#new_waypoint:active {
+  background:#FFF;
+  color:#666;
+}
+
+.waypoint {
+  cursor:pointer;
+  position:relative;
+}
+.waypoint:hover {
+  background:#E4E4E4;
+}
+
+.waypoint_options {
+  position:absolute;
+  right:-100px;
+  top:50%;
+  margin-top:-0.5em;
+  opacity:0;
+  -webkit-transition: opacity, right 200ms;
+}
+
+.waypoint:hover .waypoint_options {
+  right:0;
+  display:block;
+  opacity:1;
+}
+
+.waypoint_options a {
+  font-size:11px;
+  background:#AAA;
+  color:#FFF;
+  text-decoration:none;
+  padding:2px 4px;
+}
+
+.waypoint_options a:hover {
+  background:#333;
+}
+
+.waypoint_options a:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+
+#waypoint_rename_form {
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background:#333;
+}
+
+#waypoint_rename_form input {
+  position:absolute;
+  top:1px;
+  left:1px;
+  bottom:1px;
+  right:82px;
+  font-size:14px;
+}
+
+#waypoint_rename_form a {
+  position:absolute;
+  top: 1px;
+  right:0;
+  bottom:0;
+  width:40px;
+  height:100%;
+  background:#666;
+  text-indent:-9999px;
+  overflow:hidden;
+  opacity:0.5;
+}
+
+#waypoint_rename_form a:hover {
+  opacity:1;
+}
+
+#waypoint_rename_form a.submit {
+  right:41px;
+  background:url(../images/confirm.png) center center #2C9828;
+}
+
+#waypoint_rename_form a.cancel {
+ right:1px; 
+ background:url(../images/cancel.png) center center #A02329;
 }

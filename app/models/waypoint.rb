@@ -7,6 +7,15 @@ class Waypoint < ActiveRecord::Base
   
   acts_as_list :scope => :hunt_id
   
+  attr_accessor :next, :previous
+  
+  def next?
+    !self.next.nil?
+  end
+  
+  def previous?
+    !self.previous.nil?
+  end
   
   protected
         

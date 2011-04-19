@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(:version => 20110406183700) do
     t.integer  "hunt_id"
     t.decimal  "lat",        :precision => 15, :scale => 10
     t.decimal  "lng",        :precision => 15, :scale => 10
+    t.decimal  "distance",   :precision => 10, :scale => 3
+    t.decimal  "heading",    :precision => 10, :scale => 7
     t.datetime "created_at"
     t.datetime "updated_at"
   end

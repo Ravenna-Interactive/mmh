@@ -19,6 +19,8 @@ Huntapp::Application.routes.draw do
   
   resources :waypoints, :except => [:new, :create]
   
+  root :to => 'hunts#index'
+  
   # Sample resource route with options:
   #   resources :products do
   #     member do

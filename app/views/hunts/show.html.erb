@@ -1,8 +1,36 @@
-<h2><%= @hunt.name %></h2>
-
+<div id="location">
+  <%= link_to '<< Hunts', hunts_path %>
+</div>
 <div id="hunt_sidebar">
-  <h3>Waypoints</h3>
-  <%= link_to '+', [:new, @hunt, :waypoint], :title => 'Add Waypoint', :id => 'new_waypoint' %>  
+  <div class="panel">
+    <h2><%= @hunt.name %></h2>
+    <div class="hunt_meta">
+      Total Distance: <span class="hunt_distance"><%= distance_in_meters @hunt.total_distance %></span>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Waypoints</h3>
+    <%= link_to '+', [:new, @hunt, :waypoint], :title => 'Add Waypoint', :id => 'new_waypoint' %>
+    <div id="waypoint_list">
+    <%- @hunt.waypoints.each do |waypoint| -%>
+    <div class="waypoint" id="waypoint_<%= waypoint.id %>">
+      <div class="name"><%= waypoint.name %></div>
+      <div class="next_waypoint">
+      <%- if @hunt.waypoints.last != waypoint -%>
+        Next
+        <span class="distance"><%= distance_in_meters waypoint.distance %></span> at
+        <span class="heading"><%= heading waypoint.heading %> <%= heading_name waypoint.heading %></span>
+      <%- else -%>
+        Final Waypoint
+      <%- end -%>
+      </div>
+      <div class="waypoint_options">
+        <%= link_to 'Rename', waypoint_path(waypoint), :class => 'rename' %>
+      </div>
+    </div>
+    <%- end -%>
+    </div>
+  </div>
 </div>
 
 <div id="hunt_map">
@@ -16,7 +44,7 @@
     mapTypeId: google.maps.MapTypeId.TERRAIN
   });
   
-  var hunt = new Hunt(<%= @hunt.id %>, { map:map });
+  var hunt = new Hunt(<%= @hunt.id %>, { map:map, waypoint_list: $('waypoint_list') });
   
   var current_waypoint;
   
@@ -26,6 +54,7 @@
   });
   
   document.observe('keydown', function(e){
+    if(hunt.ignore_shortcuts) return;
     if (e.which == 65 && !hunt.editing) {
       e.preventDefault();
       hunt.startAddWayPoint();

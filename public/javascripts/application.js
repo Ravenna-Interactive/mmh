@@ -1,6 +1,7 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+
 Hunt = Class.create({
   initialize:function(id, settings){
     settings = Object.extend( { }, settings );
@@ -20,6 +21,64 @@ Hunt = Class.create({
     this.next_waypoint =  new Waypoint({
       map:null
     });
+    
+    this.rename_form = new Element('div', {id:'waypoint_rename_form'});
+    this.rename_form.insert('<input type="text" value="" >\
+    <a class="submit" href="#">Ok</a>\
+    <a class="cancel" href="#">Cancel</a>');
+    
+    this.waypoint_list = settings.waypoint_list;
+    if (this.waypoint_list) {
+      
+      var ok = this.rename_form.select('.submit').first();
+      var cancel = this.rename_form.select('.cancel').first();
+      var current_waypoint;
+      var waypoint_list_item;
+      var field = this.rename_form.select('input').first();
+      this.renameCancel = (function(){
+        this.rename_form.remove();
+        this.ignore_shortcuts = false;
+        Event.stopObserving(ok);
+        Event.stopObserving(cancel);
+      }).bind(this);
+      
+      this.renameSubmit = (function(){
+        current_waypoint.attributes.name = field.getValue();
+        waypoint_list_item.select('.name').first().update(current_waypoint.attributes.name);
+        current_waypoint.save();
+        this.rename_form.remove();
+        this.ignore_shortcuts = true;
+        Event.stopObserving(ok);
+        Event.stopObserving(cancel);
+      }).bind(this);
+      
+      
+      this.waypoint_list.observe('click', (function(e){
+        console.log("List clicked!");
+        waypoint_list_item = e.target.hasClassName('waypoint') ? e.target : e.target.up('.waypoint');
+        if (e.target != waypoint_list_item) {
+          // doing something
+          if (e.target.hasClassName('rename')) {
+            // embed the rename form inside the waypoint element
+            current_waypoint = this.waypoints.detect(function(w){
+              return "waypoint_" + w.attributes.id == waypoint_list_item.identify();
+            }, this);
+            waypoint_list_item.insert(this.rename_form);
+            field.focus();
+            this.ignore_shortcuts = true;
+            field.setValue(current_waypoint.attributes.name);
+            field.select();
+            
+            cancel.observe('click', this.renameCancel);
+            ok.observe('click', this.renameSubmit);
+            
+          };
+        }else{
+          //highlight the target
+        }
+        e.preventDefault();
+      }).bind(this));
+    };
     
     this.clickListener = this.clickListener.bind(this);
     this.dblclickListener = this.dblclickListener.bind(this);
@@ -46,6 +105,7 @@ Hunt = Class.create({
     this.infoWindow.close();
   },
   setupWaypoints:function(){
+    var previous = null;
     this.waypoints = this.attributes.waypoints.collect(function(waypoint){
       var waypoint = new Waypoint({
         attributes: waypoint,
@@ -53,14 +113,21 @@ Hunt = Class.create({
         hunt: this,
         position: new google.maps.LatLng(waypoint.lat, waypoint.lng)
       });
+      if (previous){
+        previous.next = waypoint;
+        waypoint.previous = previous;
+      }
+      
       this.bounds.extend(waypoint.getPosition());
       waypoint.moveListenerObject = google.maps.event.addListener(waypoint.marker, 'position_changed', this.resetPath.bind(this));
+      previous = waypoint;
       return waypoint;
     }, this);
     this.resetPath();
     this.fitMap()
   },
   startAddWayPoint:function(){
+    this.infoWindow.close();
     this.clickListenerObject = google.maps.event.addListener(this.map, 'click', this.clickListener);
     this.dblclickListnerObject = google.maps.event.addListener(this.map, 'dblclick', this.dblclickListener);
     this.editing = true;
@@ -85,7 +152,12 @@ Hunt = Class.create({
       hunt:this,
       position:latLng
     });
+    
     waypoint.save();
+    var last = this.lastWaypoint();
+    if (last){
+      last.setNext(waypoint);
+    }
     this.waypoints.push(waypoint);
     this.bounds.extend(latLng);
     this.updatePath(latLng);
@@ -135,6 +207,9 @@ Hunt = Class.create({
     return this.waypoints.collect(function(waypoint){
       return waypoint.getPosition();
     });
+  },
+  lastWaypoint:function(){
+    return this.waypoints[this.waypoints.length-1];
   }
 })
 
@@ -157,23 +232,41 @@ Waypoint = Class.create({
     if (this.hunt) {
       this.marker.setAnimation(google.maps.Animation.DROP);        
     };
-    this.positionListener = google.maps.event.addListener(this.marker, 'dragend', this.save.bind(this))
+    this.positionListener = google.maps.event.addListener(this.marker, 'dragend', this.updatePosition.bind(this))
     this.clickListener = google.maps.event.addListener(this.marker, 'click', this.displayInfo.bind(this));
   },
+  updatePosition:function(){
+    if (this.hasNext()) {
+      this.calculateDistances();
+    };
+    this.save();
+    if (this.hasPrevious()) {
+      this.previous.calculateDistances();
+      this.previous.save();
+    };
+  },
   save:function(){
-    var path, method;
+    var path, method, success;
     if (this.attributes.id) {
       path = "/waypoints/" + this.attributes.id + '.json';
       method = "PUT";
     }else{
       path = '/hunts/' + this.hunt.id + '/waypoints.json';
       method = "POST";
+      success = (function(response){
+        Object.extend(this.attributes, response.responseJSON.waypoint);
+        this.displayInfo();
+        
+        // now add the item to the list
+        this.hunt.waypoint_list.insert(WaypointTemplate.evaluate(this.attributes));
+        
+      }).bind(this);
     }
     var pos = this.getPosition();
     this.attributes.lat = pos.lat();
     this.attributes.lng = pos.lng();
     
-    var body = ['lat','lng','name', 'position'].inject({}, function(body, att){
+    var body = ['lat','lng','name', 'position', 'heading', 'distance'].inject({}, function(body, att){
       body['waypoint['+att+']'] = this.attributes[att];
       return body;
     }, this);
@@ -182,11 +275,26 @@ Waypoint = Class.create({
     new Ajax.Request(path, {
       method:method,
       parameters: body,
-      onSuccess:(function(response){
-        Object.extend(this.attributes, response.responseJSON.waypoint);
-        this.displayInfo();
-      }).bind(this)
+      onSuccess:success
     })
+  },
+  setNext:function(next){
+    if (next == this.next) { return };
+    this.next = next;
+    if (next) next.previous = this;
+    this.calculateDistances();
+    
+    this.save();
+  },
+  hasNext:function(){
+    return this.next;
+  },
+  setPrevious:function(previous){
+    this.previous = previous;
+    if (previous) previous.next = this;
+  },
+  hasPrevious:function(){
+    return this.previous;
   },
   setPosition:function(ll){
     this.marker.setPosition(ll);
@@ -194,22 +302,100 @@ Waypoint = Class.create({
   getPosition:function(){
     return this.marker.getPosition();
   },
+  calculateDistances:function(){
+    if (this.hasNext()) {
+      var distance = google.maps.geometry.spherical.computeDistanceBetween(this.getPosition(), this.next.getPosition());
+      var heading = google.maps.geometry.spherical.computeHeading(this.getPosition(), this.next.getPosition());
+      this.attributes.distance = distance;
+      this.attributes.heading = heading;
+    }else{
+      this.attributes.distance = null;
+      this.attributes.heading = null;
+    }
+    
+    var waypoint;
+    if(waypoint = this.getListItem()){
+      if (this.hasNext()) {
+        waypoint.select('.name').first().update(this.attributes.name);
+        waypoint.select('.next_waypoint').first().update('\
+        Next <span class="distance">' + FormatDistance(this.attributes.distance) + ' meters</span>\
+        <span class="heading">' + FormatHeading(this.attributes.heading) + '</span>\
+        ');
+        
+      }else{
+        waypoint.select('.next_waypoint').first().update('Final Waypoint');
+      }
+    }
+    
+  },
   destroy:function(){
+    
+    // fix up the linked list
+    if (this.previous) this.previous.setNext(this.next);
+    
     this.marker.setMap(null);
     new Ajax.Request("/waypoints/" + this.attributes.id + '.json', {
-      method:'delete',
-      onSuccess:function(){
-      }
+      method:'delete'
     });
+    
+    this.getListItem().remove();
+  },
+  getListItem:function(){
+    return $('waypoint_' + this.attributes.id);
   },
   displayInfo:function(){
     var content = new Element('div');
     var trash = new Element('a', {href:'#'});
     trash.insert('delete');
-    content.insert( "<strong>" + this.attributes.name + "</strong>" );
+    var info = "<strong>" + this.attributes.name + "</strong>";
+    if (this.hasNext()) {
+      info = info + "<br/>Distance to next: <strong>" + FormatDistance(this.attributes.distance) + " meters</strong>";
+      info = info + "<br/>Heading to next: <strong>" + FormatHeading(this.attributes.heading) + "&deg;</strong>";
+    };
+    content.insert(info);
     content.insert(trash);
     trash.observe('click', (function(e){ e.preventDefault(); this.hunt.removeWaypoint(this) }).bind(this));
     this.hunt.infoWindow.setContent(content);
     this.hunt.infoWindow.open(this.map, this.marker);
   }
 })
+
+var WaypointTemplate = new Template(
+  '<div class="waypoint" id="waypoint_#{id}">\
+    <div class="name">#{name}</div>\
+    <div class="next_waypoint">\
+      Final Waypoint\
+    </div>\
+    <div class="waypoint_options">\
+      <a class="rename" href="#{url}">Rename</a>\
+    </div>\
+  </div>'
+);
+
+function FormatHeading(h){
+  if (h < 0) h = h + 360;
+  var formatted = Math.round(h);
+  var ranges = [
+    [-23, 23, 'N'],
+    [23, 68, 'NE'],
+    [68, 113, 'E'],
+    [113, 157, 'SE'],
+    [157, 203, 'S'],
+    [203, 248, 'SW'],
+    [248, 293, 'W'],
+    [293, 338, 'NW'],
+    [338, 360, 'N']  
+  ];
+  var range = ranges.detect(function(r){
+    return h >= r[0] && h <= r[1];
+  });
+  if(!range) return;
+  var heading = range[2];
+  
+  return formatted + "&deg;" + heading;
+}
+
+function FormatDistance(d){
+  d = Math.round(d*10)/10;
+  return d;
+}

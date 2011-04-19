@@ -6,6 +6,8 @@ class CreateWaypoints < ActiveRecord::Migration
       t.references :hunt
       t.decimal :lat, :precision => 15, :scale => 10
       t.decimal :lng, :precision => 15, :scale => 10
+      t.decimal :distance, :precision => 10, :scale => 3
+      t.decimal :heading, :precision => 10, :scale => 7
       t.timestamps
     end
   end
