@@ -10,10 +10,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110406183700) do
+ActiveRecord::Schema.define(:version => 20110425211319) do
 
   create_table "hunts", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "memberships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "hunt_id"
+    t.string   "level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "email"
+    t.string   "salt"
+    t.string   "crypted_password"
+    t.string   "persistence_token"
+    t.datetime "current_login_at"
+    t.datetime "last_login_at"
+    t.string   "current_login_ip"
+    t.string   "last_login_ip"
+    t.integer  "login_count"
+    t.integer  "failed_login_count"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

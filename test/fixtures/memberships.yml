@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+user_alpha:
+  user: user
+  hunt: alpha
+  level: owner
+
+two:
+  user: 
+  hunt: 
+  level: MyString

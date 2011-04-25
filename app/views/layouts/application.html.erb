@@ -8,8 +8,22 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
+  <div id="application">
+    <div id="header">
+      <h1><a href="/">Track My Hunt</a></h1>
+      <ul id="navigation">
+        <%- if current_user? -%>
+        <li><%= link_to 'Sign Out', signout_path %></li>
+        <li><%= link_to 'Your Hunts', hunts_path %></li>
+        <%- else -%>
+        <li><%= link_to 'Sign In', signin_path %></li>
+        <li><%= link_to 'Sign Up', signup_path %></li>
+        <%- end -%>
+      </ul>
+    </div>
+    <%= yield %>
 
-<%= yield %>
+  </div>
 
 </body>
 </html>

@@ -1,6 +1,11 @@
 <div id="location">
   <%= link_to '<< Hunts', hunts_path %>
 </div>
+<%- unless current_user? -%>
+<div id="login-notice">
+  <%= link_to 'Sign Up', signup_path %> or <%= link_to 'Log In', signin_path %> to save this hunt!
+</div>
+<%- end -%>
 <div id="hunt_sidebar">
   <div class="panel">
     <h2><%= @hunt.name %></h2>

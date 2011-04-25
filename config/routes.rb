@@ -17,6 +17,13 @@ Huntapp::Application.routes.draw do
     resources :waypoints, :only => [:new, :create]
   end
   
+  resources :users, :only => [:new, :create]
+  match "signup" => 'users#new', :as => :signup
+  
+  resource :user_sessions, :only => [:new, :create, :destroy]
+  match "signin" => 'user_sessions#new', :as => :signin
+  match "signout" => 'user_sessions#destroy', :as => :signout, :method => :destroy
+  
   resources :waypoints, :except => [:new, :create]
   
   root :to => 'hunts#index'

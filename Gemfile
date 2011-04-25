@@ -6,6 +6,9 @@ gem 'acts_as_list'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'authlogic', :git => 'https://github.com/cmeiklejohn/authlogic.git'
+gem 'haml'
+
 
 # Use unicorn as the web server
 # gem 'unicorn'

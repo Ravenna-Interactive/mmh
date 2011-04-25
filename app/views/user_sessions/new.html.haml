@@ -1,0 +1,14 @@
+= form_for @user_session do |f|
+  .input_field
+    = f.label :email, "Email"
+    = f.text_field :email
+    - if @user_session.errors[:email]
+      .error
+        = @user_session.errors[:email].join('')
+  .input_field
+    = f.label :password, "Password"
+    = f.password_field :password
+  .form_control
+    = f.submit "Sign In"
+  
+  

@@ -3,7 +3,7 @@ require 'test_helper'
 class WaypointsControllerTest < ActionController::TestCase
   
   test "create waypoint" do
-    @hunt = hunts(:one)
+    @hunt = hunts(:alpha)
     assert_difference 'Waypoint.count' do
       post :create, :hunt_id => @hunt.id, :waypoint => { :lat => '1.1', :lng => '1.1' }
       assert_redirected_to assigns(:waypoint)
@@ -12,7 +12,7 @@ class WaypointsControllerTest < ActionController::TestCase
   end
   
   test "create waypoint xhr" do
-    @hunt = hunts(:one)
+    @hunt = hunts(:alpha)
     assert_difference 'Waypoint.count' do
       post :create, :hunt_id => @hunt.id, :waypoint => { :lat => '1.1', :lng => '1.1' }, :format => :json
     end
