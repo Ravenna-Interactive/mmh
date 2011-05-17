@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :memberships
   
   has_many :hunts, :through => :memberships
+  has_many :sessions
 
   def owned_hunts
     hunts.where( { :memberships => { :level => 'owner' } } )

@@ -5,6 +5,14 @@ GIT
     authlogic (2.1.6)
       activesupport
 
+GIT
+  remote: https://github.com/thoughtbot/paperclip.git
+  revision: 13d51e3120e67b2b8b0b4d550968235dc90defb9
+  specs:
+    paperclip (2.3.10)
+      activerecord (>= 2.3.0)
+      activesupport (>= 2.3.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -86,5 +94,6 @@ DEPENDENCIES
   authlogic!
   autotest-rails
   haml
+  paperclip!
   rails (= 3.0.6)
   sqlite3

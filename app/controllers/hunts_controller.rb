@@ -17,13 +17,21 @@ class HuntsController < ApplicationController
     else
       unsaved_hunts << @hunt
     end
-    redirect_to @hunt
+    redirect_to [:edit, @hunt]
+  end
+  
+  # overview of the hunt
+  # overlay the last hunt activity
+  # show a list of sessions to display
+  # show the notes on the map
+  def show
+    @hunt current_user.hunts.find(params[:id])
   end
     
-  # shows the hunt details
+  # edit the hunt details/waypoints
   # the show and edit views will pretty much be the same action
   # since most editing will be javascript heavy using the Google Maps API
-  def show
+  def edit
     if current_user
       @hunt = current_user.owned_hunts.find(params[:id])
     else

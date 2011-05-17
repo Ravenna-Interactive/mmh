@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  lat: 9.99
+  lng: 9.99
+  session: 
+  body: MyText
+  attachment_file_name: MyString
+  attachment_content_type: MyString
+  attachment_file_size: 1
+  attachment_updated_at: 2011-05-17 16:11:42
+
+two:
+  lat: 9.99
+  lng: 9.99
+  session: 
+  body: MyText
+  attachment_file_name: MyString
+  attachment_content_type: MyString
+  attachment_file_size: 1
+  attachment_updated_at: 2011-05-17 16:11:42
