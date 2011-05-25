@@ -1,14 +1,21 @@
-= form_for @user do |f|
-  .input_field
-    = f.label :email, "Email"
-    = f.text_field :email
-  .input_field
-    = f.label :password, "Password"
-    = f.password_field :password
-  .input_field
-    = f.label :password_confirmation, "Confirm Password"
-    = f.password_field :password_confirmation
-  .form_control
-    = f.submit "Sign Up"
-  
-  
+.narrow-form
+  %h2 Sign Up
+  = field_error_list @user
+  = form_for @user do |f|
+    .input-field
+      = f.label :email, "Email"
+      = f.text_field :email
+      = field_error_list @user, :email
+    .input-field
+      = f.label :password, "Password"
+      = f.password_field :password
+      = field_error_list @user, :password
+    .input-field
+      = f.label :password_confirmation, "Confirm Password"
+      = f.password_field :password_confirmation
+      = field_error_list @user, :password_confirmation
+    .form-control
+      .sign-up-link
+        Already a hunter?
+        = link_to 'Sign In', :signin    
+      = f.submit "Sign Up"

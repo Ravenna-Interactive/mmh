@@ -2,7 +2,7 @@ class CreateMemberships < ActiveRecord::Migration
   def self.up
     create_table :memberships do |t|
       t.references :user
-      t.references :hunt
+      t.references :map
       t.string :level
 
       t.timestamps

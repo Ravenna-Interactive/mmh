@@ -1,11 +1,11 @@
 class Waypoint < ActiveRecord::Base
-  validates_presence_of :hunt_id, :name, :lat, :lng
+  validates_presence_of :map_id, :name, :lat, :lng
   validates_numericality_of :lat, :lng
-  belongs_to :hunt
+  belongs_to :map
   
-  before_validation :auto_generate_name, :on => :create, :if => :hunt_id?
+  before_validation :auto_generate_name, :on => :create, :if => :map_id?
   
-  acts_as_list :scope => :hunt_id
+  acts_as_list :scope => :map_id
   
   attr_accessor :next, :previous
   
@@ -26,7 +26,7 @@ class Waypoint < ActiveRecord::Base
     end
   
     def count
-      self.hunt.waypoints.count
+      self.map.waypoints.count
     end
   
 end

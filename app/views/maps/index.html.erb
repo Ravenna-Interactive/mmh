@@ -1,0 +1,9 @@
+<h2>Hunts</h2>
+<%= link_to 'Create new Map', :new_map %>
+<%- if @maps.count > 0 -%>
+<ul>
+  <%- @maps.each do |map| -%>
+  <li><%= link_to map.name, map %></li>
+  <%- end -%>
+</ul>
+<%- end -%>

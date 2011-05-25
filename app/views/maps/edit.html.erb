@@ -1,27 +1,27 @@
 <div id="location">
-  <%= link_to '<< Hunts', hunts_path %>
+  <%= link_to '<< Maps', maps_path %>
 </div>
 <%- unless current_user? -%>
 <div id="login-notice">
-  <%= link_to 'Sign Up', signup_path %> or <%= link_to 'Log In', signin_path %> to save this hunt!
+  <%= link_to 'Sign Up', signup_path %> or <%= link_to 'Log In', signin_path %> to save this map!
 </div>
 <%- end -%>
 <div id="hunt_sidebar">
   <div class="panel">
-    <h2><%= @hunt.name %></h2>
+    <h2><%= @map.name %></h2>
     <div class="hunt_meta">
-      Total Distance: <span class="hunt_distance"><%= distance_in_meters @hunt.total_distance %></span>
+      Total Distance: <span class="hunt_distance"><%= distance_in_meters @map.total_distance %></span>
     </div>
   </div>
   <div class="panel">
     <h3>Waypoints</h3>
-    <%= link_to '+', [:new, @hunt, :waypoint], :title => 'Add Waypoint', :id => 'new_waypoint' %>
+    <%= link_to '+', [:new, @map, :waypoint], :title => 'Add Waypoint', :id => 'new_waypoint' %>
     <div id="waypoint_list">
-    <%- @hunt.waypoints.each do |waypoint| -%>
+    <%- @map.waypoints.each do |waypoint| -%>
     <div class="waypoint" id="waypoint_<%= waypoint.id %>">
       <div class="name"><%= waypoint.name %></div>
       <div class="next_waypoint">
-      <%- if @hunt.waypoints.last != waypoint -%>
+      <%- if @map.waypoints.last != waypoint -%>
         Next
         <span class="distance"><%= distance_in_meters waypoint.distance %></span> at
         <span class="heading"><%= heading waypoint.heading %> <%= heading_name waypoint.heading %></span>
@@ -49,26 +49,26 @@
     mapTypeId: google.maps.MapTypeId.TERRAIN
   });
   
-  var hunt = new Hunt(<%= @hunt.id %>, { map:map, waypoint_list: $('waypoint_list') });
+  var map = new Map(<%= @map.id %>, { map:map, waypoint_list: $('waypoint_list') });
   
   var current_waypoint;
   
   $('new_waypoint').observe('click', function(e){
     e.preventDefault();
-    if(!hunt.editing) hunt.startAddWayPoint();
+    if(!map.editing) map.startAddWayPoint();
   });
   
   document.observe('keydown', function(e){
-    if(hunt.ignore_shortcuts) return;
-    if (e.which == 65 && !hunt.editing) {
+    if(map.ignore_shortcuts) return;
+    if (e.which == 65 && !map.editing) {
       e.preventDefault();
-      hunt.startAddWayPoint();
-      hunt.closeWindow();
+      map.startAddWayPoint();
+      map.closeWindow();
     }else if(e.which == 27) {
-      if(hunt.editing) hunt.endAddWayPoint();
-      hunt.closeWindow();
+      if(map.editing) map.endAddWayPoint();
+      map.closeWindow();
     }else if(e.which == 82){
-      hunt.fitMap();
+      map.fitMap();
     }
   })
   

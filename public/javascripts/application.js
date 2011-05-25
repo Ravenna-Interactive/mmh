@@ -2,7 +2,7 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
-Hunt = Class.create({
+Map = Class.create({
   initialize:function(id, settings){
     settings = Object.extend( { }, settings );
     this.id = id;
@@ -19,7 +19,7 @@ Hunt = Class.create({
       strokeOpacity:0.25
     });
     this.next_waypoint =  new Waypoint({
-      map:null
+      hunt_map:this
     });
     
     this.rename_form = new Element('div', {id:'waypoint_rename_form'});
@@ -90,10 +90,10 @@ Hunt = Class.create({
     this.infoWindow = new google.maps.InfoWindow();
   },
   load:function(){
-    new Ajax.Request('/hunts/' + this.id + '.json', {
+    new Ajax.Request('/maps/' + this.id + '.json', {
       method: 'get',
       onSuccess:(function(response){
-        this.attributes = response.responseJSON.hunt;
+        this.attributes = response.responseJSON.map;
         if(this.attributes.waypoints.length > 0) this.setupWaypoints();
       }).bind(this)
     });
@@ -109,8 +109,8 @@ Hunt = Class.create({
     this.waypoints = this.attributes.waypoints.collect(function(waypoint){
       var waypoint = new Waypoint({
         attributes: waypoint,
-        map: this.map,
-        hunt: this,
+        hunt_map: this,
+        map:this.map,
         position: new google.maps.LatLng(waypoint.lat, waypoint.lng)
       });
       if (previous){
@@ -148,8 +148,8 @@ Hunt = Class.create({
   },
   addWaypoint:function(latLng){
     var waypoint =  new Waypoint({
+      hunt_map:this,
       map:this.map,
-      hunt:this,
       position:latLng
     });
     
@@ -218,8 +218,8 @@ Waypoint = Class.create({
     settings = Object.extend( { attributes: {} }, settings );
     this.attributes = settings.attributes;
     this.settings = settings;
-    this.hunt = settings.hunt;
-    this.map = settings.map;
+    this.hunt_map = settings.hunt_map;
+    this.map = settings.map
     
     var marker_image = new google.maps.MarkerImage('/images/marker.png')
     
@@ -229,7 +229,7 @@ Waypoint = Class.create({
       position:settings.position,
       draggable:true
     });
-    if (this.hunt) {
+    if (this.map) {
       this.marker.setAnimation(google.maps.Animation.DROP);        
     };
     this.positionListener = google.maps.event.addListener(this.marker, 'dragend', this.updatePosition.bind(this))
@@ -251,14 +251,14 @@ Waypoint = Class.create({
       path = "/waypoints/" + this.attributes.id + '.json';
       method = "PUT";
     }else{
-      path = '/hunts/' + this.hunt.id + '/waypoints.json';
+      path = '/maps/' + this.hunt_map.id + '/waypoints.json';
       method = "POST";
       success = (function(response){
         Object.extend(this.attributes, response.responseJSON.waypoint);
         this.displayInfo();
         
         // now add the item to the list
-        this.hunt.waypoint_list.insert(WaypointTemplate.evaluate(this.attributes));
+        this.hunt_map.waypoint_list.insert(WaypointTemplate.evaluate(this.attributes));
         
       }).bind(this);
     }
@@ -354,9 +354,9 @@ Waypoint = Class.create({
     };
     content.insert(info);
     content.insert(trash);
-    trash.observe('click', (function(e){ e.preventDefault(); this.hunt.removeWaypoint(this) }).bind(this));
-    this.hunt.infoWindow.setContent(content);
-    this.hunt.infoWindow.open(this.map, this.marker);
+    trash.observe('click', (function(e){ e.preventDefault(); this.hunt_map.removeWaypoint(this) }).bind(this));
+    this.hunt_map.infoWindow.setContent(content);
+    this.hunt_map.infoWindow.open(this.map, this.marker);
   }
 })
 

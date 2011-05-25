@@ -1,14 +1,17 @@
-= form_for @user_session do |f|
-  .input_field
-    = f.label :email, "Email"
-    = f.text_field :email
-    - if @user_session.errors[:email]
-      .error
-        = @user_session.errors[:email].join('')
-  .input_field
-    = f.label :password, "Password"
-    = f.password_field :password
-  .form_control
-    = f.submit "Sign In"
-  
-  
+.narrow-form
+  %h2 Sign In
+  = form_for @user_session do |f|
+    = field_error_list @user_session
+    .input-field
+      = f.label :email, "Email"
+      = f.text_field :email
+      = field_error_list @user_session, :email
+    .input-field
+      = f.label :password, "Password"
+      = f.password_field :password
+      = field_error_list @user_session, :password
+    .form-control
+      .sign-up-link
+        No account?
+        = link_to 'Sign Up', :signup
+      = f.submit "Sign In"

@@ -13,7 +13,7 @@ Huntapp::Application.routes.draw do
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
   
-  resources :hunts do
+  resources :maps do
     resources :waypoints, :only => [:new, :create]
   end
   
@@ -24,9 +24,11 @@ Huntapp::Application.routes.draw do
   match "signin" => 'user_sessions#new', :as => :signin
   match "signout" => 'user_sessions#destroy', :as => :signout, :method => :destroy
   
+  match "activity" => 'activity#index', :as => :activity
+  match "start-mapping" => 'maps#new'
   resources :waypoints, :except => [:new, :create]
   
-  root :to => 'hunts#index'
+  root :to => 'pages#home'
   
   # Sample resource route with options:
   #   resources :products do

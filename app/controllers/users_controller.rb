@@ -10,8 +10,8 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     respond_to do |format|
       if @user.save
-        unsaved_hunts.each do |hunt|
-          @user.memberships.create(:hunt => hunt, :level => 'owner' )
+        unsaved_maps.each do |map|
+          @user.memberships.create(:map => map, :level => 'owner' )
         end
         flash[:notice] = 'Account created.'
         format.html { redirect_to :root }

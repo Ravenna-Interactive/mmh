@@ -2,10 +2,10 @@
 
 user_alpha:
   user: user
-  hunt: alpha
+  map: alpha
   level: owner
 
 two:
   user: 
-  hunt: 
+  map: 
   level: MyString

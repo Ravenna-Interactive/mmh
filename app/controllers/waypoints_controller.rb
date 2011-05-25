@@ -2,10 +2,10 @@ class WaypointsController < ApplicationController
   
   respond_to :html, :json
   
-  before_filter :find_hunt, :only => [:create]
+  before_filter :find_map, :only => [:create]
   
   def create
-    @waypoint = @hunt.waypoints.build(params[:waypoint])
+    @waypoint = @map.waypoints.build(params[:waypoint])
     flash[:notice] = "Waypoint created" if @waypoint.save
     respond_with(@waypoint)
   end
@@ -31,8 +31,8 @@ class WaypointsController < ApplicationController
   
   protected
   
-    def find_hunt
-      @hunt = Hunt.find(params[:hunt_id])
+    def find_map
+      @map = Map.find(params[:map_id])
     end
   
 end

@@ -1,7 +1,7 @@
-class CreateSessions < ActiveRecord::Migration
+class CreateHunts < ActiveRecord::Migration
   def self.up
-    create_table :sessions do |t|
-      t.references :hunt
+    create_table :hunts do |t|
+      t.references :map
       t.references :user
       t.datetime :finished_at
 

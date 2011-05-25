@@ -3,9 +3,9 @@
 alpha:
   name: MyString
   position: 1
-  hunt: Two
+  map: Two
 
 two:
   name: MyString
   position: 1
-  hunt: 
+  map: 

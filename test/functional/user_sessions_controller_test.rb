@@ -13,7 +13,7 @@ class UserSessionsControllerTest < ActionController::TestCase
       :email => 'unclesam@us.gov',
       :password => 'fr33dom'
     }
-    assert_redirected_to :root
+    assert_redirected_to :activity
     assert @controller.send(:current_user?), 'No user session'
   end
   

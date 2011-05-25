@@ -1,27 +1,14 @@
-require 'military_alphabet'
-# The core model of the app. It has a general location and has waypoints which show
-# a hunt's route
+# Represents the actual activity of a user going out and hunting. This tracks an individuals activity for
+# a specific hunt. Should we require a user to be within a certain distance of the first waypoint to start?
+# 
+# the client should be able to queue up all activity locally without interacting with a server
 class Hunt < ActiveRecord::Base
+  belongs_to :map
+  belongs_to :user
   
-  has_many :waypoints, :order => :position
+  # the path/route this session took
+  has_many :positions, :order => :created_at
   
-  before_validation :auto_generate_name, :on => :create
-  
-    def total_distance
-      Waypoint.select("sum(distance) as total_distance").where({:hunt_id => self.id}).first.total_distance
-    end
-  
-  protected
-  
-    def auto_generate_name
-      alphabet = MilitaryAlphabet.new
-      character = alphabet[count]
-      self.name = "Hunt #{character}"
-      
-    end
-    
-    def count
-      Hunt.count
-    end
-      
+  # the notes/photos/videos made along the way
+  has_many :notes, :order => :created_at
 end

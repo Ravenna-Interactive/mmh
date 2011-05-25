@@ -1,0 +1,13 @@
+.sidebar.col4
+  %h2 Your Hunts
+  %p You haven't hunted yet.
+  %h2 Your Maps
+  %p You don't have any maps yet.
+
+.main.col12
+  %h2 Activity
+
+  - if @timeline.empty?
+    %p All is quiet. Nothing to report.
+  - else
+    %p Render the timeline

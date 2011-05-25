@@ -3,18 +3,18 @@ require 'test_helper'
 class WaypointsControllerTest < ActionController::TestCase
   
   test "create waypoint" do
-    @hunt = hunts(:alpha)
+    @map = maps(:alpha)
     assert_difference 'Waypoint.count' do
-      post :create, :hunt_id => @hunt.id, :waypoint => { :lat => '1.1', :lng => '1.1' }
+      post :create, :map_id => @map.id, :waypoint => { :lat => '1.1', :lng => '1.1' }
       assert_redirected_to assigns(:waypoint)
     end
     
   end
   
   test "create waypoint xhr" do
-    @hunt = hunts(:alpha)
+    @map = maps(:alpha)
     assert_difference 'Waypoint.count' do
-      post :create, :hunt_id => @hunt.id, :waypoint => { :lat => '1.1', :lng => '1.1' }, :format => :json
+      post :create, :map_id => @map.id, :waypoint => { :lat => '1.1', :lng => '1.1' }, :format => :json
     end
     assert_response :created
     assert_equal 'application/json', response.content_type

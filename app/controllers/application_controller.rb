@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  around_filter :manage_unsaved_hunts
+  around_filter :manage_unsaved_maps
   
   protected
   
@@ -17,15 +17,15 @@ class ApplicationController < ActionController::Base
   helper_method :current_user?, :current_user
   
   
-  def unsaved_hunts
-    @unsaved_hunts ||= []
+  def unsaved_maps
+    @unsaved_maps ||= []
   end
   
-  def manage_unsaved_hunts
-    session[:hunt_ids] ||= []
-    @unsaved_hunts = Hunt.where(:id => session[:hunt_ids])
+  def manage_unsaved_maps
+    session[:map_ids] ||= []
+    @unsaved_maps = session[:map_ids].empty? ? [] : Map.where(:id => session[:map_ids].compact)
     yield
-    session[:hunt_ids] = @unsaved_hunts.collect { |hunt| hunt.id }
+    session[:map_ids] = @unsaved_maps.collect { |map| map.id }
   end
   
 end

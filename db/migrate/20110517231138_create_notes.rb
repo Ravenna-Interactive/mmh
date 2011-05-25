@@ -3,7 +3,7 @@ class CreateNotes < ActiveRecord::Migration
     create_table :notes do |t|
       t.decimal :lat
       t.decimal :lng
-      t.references :session
+      t.references :hunt
       t.text :body
       t.string :attachment_file_name
       t.string :attachment_content_type

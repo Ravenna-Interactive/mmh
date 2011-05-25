@@ -1,7 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-alpha:
-  name: Alpha
+one:
+  map: 
+  user: 
+  finished_at: 2011-05-17 16:01:42
 
-beta:
-  name: Beta
+two:
+  map: 
+  user: 
+  finished_at: 2011-05-17 16:01:42

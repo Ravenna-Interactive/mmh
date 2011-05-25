@@ -10,9 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110425211319) do
+ActiveRecord::Schema.define(:version => 20110517231138) do
 
   create_table "hunts", :force => true do |t|
+    t.integer  "map_id"
+    t.integer  "user_id"
+    t.datetime "finished_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "maps", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -20,8 +28,29 @@ ActiveRecord::Schema.define(:version => 20110425211319) do
 
   create_table "memberships", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "hunt_id"
+    t.integer  "map_id"
     t.string   "level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "notes", :force => true do |t|
+    t.decimal  "lat"
+    t.decimal  "lng"
+    t.integer  "hunt_id"
+    t.text     "body"
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "positions", :force => true do |t|
+    t.decimal  "lat"
+    t.decimal  "lng"
+    t.integer  "hunt_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -44,7 +73,7 @@ ActiveRecord::Schema.define(:version => 20110425211319) do
   create_table "waypoints", :force => true do |t|
     t.string   "name"
     t.integer  "position"
-    t.integer  "hunt_id"
+    t.integer  "map_id"
     t.decimal  "lat",        :precision => 15, :scale => 10
     t.decimal  "lng",        :precision => 15, :scale => 10
     t.decimal  "distance",   :precision => 10, :scale => 3

@@ -3,7 +3,7 @@ class CreatePositions < ActiveRecord::Migration
     create_table :positions do |t|
       t.decimal :lat
       t.decimal :lng
-      t.references :sesssion
+      t.references :hunt
 
       t.timestamps
     end
