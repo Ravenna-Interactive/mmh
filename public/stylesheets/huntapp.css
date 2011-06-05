@@ -11,24 +11,25 @@
          url('../typefaces/mal_de_ojo-webfont.svg#MaldeOjoRegular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 
 body {
   margin:0;
   font: 12px Arial, sans-serif;
-  line-height:1.4;
+  line-height:16px;
   background: #14200B;
 }
 
-a {
-  color: #E5601A;
-}
-
+a {color: #E5601A;}
+.clear{clear:both;}
+.right{float:right;}
+.left{float:left;}
+.ad_space{background-color:#666;}
+.bold{font-weight:bold;}
+.orange{color:#e86100;}
 
 /* Columns */
-
 div.limiter {
   width: 960px;
   min-width: 960px;
@@ -41,9 +42,9 @@ div.limiter {
 }
 
 #header, #footer {
-  height: 143px;
+  height: 140px;
   min-width: 960px;
-  background: url(../images/trees.png) center top #1A2D0C;
+  background: url(../images/header_trees.jpg) repeat-x;
 }
 
 .controller-maps.action-edit #footer {
@@ -90,6 +91,9 @@ div.limiter {
   width: 251px;
   height: 91px;
 }
+#h_search{position:absolute; top:5px; right:0;}
+#search_input{background:url(../images/search_input_bg.png) no-repeat; width:155px; height:22px; border:none;}
+#search_submit{background:url(../images/search_submit.png) no-repeat; width:30px; height:22px; border:none;}
 
 #navigation {
   position:absolute;
@@ -119,7 +123,7 @@ div.limiter {
 
 #secondary-navigation {
   position:absolute;
-  top:5px;
+  top:9px;
   right:200px;
   list-style:none;
   padding:0;
@@ -450,3 +454,24 @@ ul.field-errors {
   padding:14px;
 }
 
+/* FOOTER */
+
+#footer_bg{width:100%; height:140px; background:url(images/header_trees.jpg) repeat-x;}
+#footer{width:480px; margin:0 auto;}
+.footer_list{width:120px; margin:30px 40px 0 0;}
+.footer_list li{padding-bottom:5px; font-size:11px; color:#fff;}
+.footer_list li a{color:#fff;}
+
+
+/* HOME */
+#home_highlight{width:940px; height:330px; background-color:#fff; padding:10px; margin-bottom:10px;}
+#home_middle_ad{width:960px; height:100px; margin-bottom:20px;}
+
+#home_intro{width:350px; min-height:200px; margin-right:20px;}
+#home_intro p{margin-bottom:10px;}
+#home_recent{background:url(../images/recent_bg.png) repeat-y; width:215px; height:auto; padding:0 10px;}
+#home_recent_list li{padding:5px 0;}
+.user_avatar{width:34px; margin-right:10px;}
+.recent_update{width:170px;}
+
+#home_bottom_right_ad{width:300px; height:325px; padding:20px; background-color:#fff; margin-left:15px;}

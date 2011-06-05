@@ -11,6 +11,10 @@
   <div id="application">
     <div id="header">
       <div class="limiter">
+		<div id="h_search">
+         <form><input name="search" id="search_input" /><input type="img" id="search_submit" /></form>
+        </div>
+	
         <h1><a href="/">Track My Hunt</a></h1>
         <ul id="secondary-navigation">
           <%- if current_user? -%>
@@ -37,7 +41,29 @@
     </div>
     <div id="footer">
         <div class="limiter">
-          Footer
+         	<ul class="left footer_list">
+	        	<li class="bold">NEED HELP?</li>
+	            <li><a href="/ask_a_question">Ask a Question</a></li>
+	            <li><a href="/site_feedback">Site Feedback</a></li>
+	            <li><a href="/how_to_use">How to Use the App</a></li>
+	        </ul>
+	        <ul class="left footer_list">
+	        	<li class="bold">OTHER STUFF</li>
+	            <li><a href="#">Get the App</a></li>
+				 <%- if current_user? -%>
+					<li><%= link_to 'Sign Out', signout_path %></li>
+	           	 <%- else -%>
+			          <li><%= link_to 'Sign In', signin_path %></li>
+			          <li><%= link_to 'Sign Up', signup_path %></li>
+			     <%- end -%>
+	            <li><a href="/how_it_works">How it Works</li>
+	        </ul>
+	        <ul class="left footer_list">
+	        	<li class="bold">&copy; 2011 Outdoors Engineering</li>
+	            <li><a href="/terms_of_use">Legal/Terms of Use</a></li>
+	            <li><a href="/privacy_policy">Privacy Policy</a></li>
+
+	        </ul>
         </div>
     </div>
   </div>
