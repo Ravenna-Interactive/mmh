@@ -2,7 +2,21 @@
   %h2 Your Hunts
   %p You haven't hunted yet.
   %h2 Your Maps
-  %p You don't have any maps yet.
+  - if current_user.owned_maps.count > 0
+    %ul
+      - current_user.owned_maps.limit(5).each do |map|
+        %li
+          = link_to map_path(map) do
+            = image_tag map.thumbnail_image_url
+            = map.name
+            %br
+            = pluralize map.waypoints.count, 'waypoint'
+            = human_distance map.total_distance
+      - if current_user.owned_maps.count > 5
+        %li
+          = link_to 'More Maps', '#'
+  - else
+    %p You don't have any maps yet.
 
 .main.col12
   %h2 Activity

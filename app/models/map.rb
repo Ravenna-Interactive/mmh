@@ -10,6 +10,19 @@ class Map < ActiveRecord::Base
     def total_distance
       Waypoint.select("sum(distance) as total_distance").where({:map_id => self.id}).first.total_distance
     end
+    
+    def thumbnail_image_url(options = {})
+      options.reverse_merge!(
+        :size => 50
+      )
+      size = "#{options[:size]}x#{options[:size]}"
+      location = "#{start_location.lat},#{start_location.lng}" if self.start_location.present?
+      "http://maps.google.com/maps/api/staticmap?center=#{location}&zoom=12&size=#{size}&maptype=terrain&sensor=false"
+    end
+    
+    def start_location
+      self.waypoints.first
+    end
   
   protected
   

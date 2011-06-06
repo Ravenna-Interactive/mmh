@@ -4,6 +4,15 @@ module MapsHelper
     number_with_delimiter(number_with_precision(distance, :precision => 1)) + " meters" if distance
   end
   
+  
+  def human_distance(distance)
+    # distance is in meters, so convert first o feet
+    return unless distance
+    miles = distance / 1609.344
+    number_with_delimiter(number_with_precision(miles, :precision => 1)) + " miles" if distance
+    
+  end
+  
   def heading(h)
     number_with_precision(h, :precision => 0) + "&deg;".html_safe if h
   end
