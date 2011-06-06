@@ -5,6 +5,8 @@ class MapsController < ApplicationController
   
   # a list of your hunts
   def index
+    @maps = Map.find :all
+    respond_with @maps, :include => :waypoints
   end
   
   # we're going to autosave new hunts and redirect
@@ -18,6 +20,20 @@ class MapsController < ApplicationController
       unsaved_maps << @map
     end
     redirect_to [:edit, @map]
+  end
+  
+  def create
+    @map = Map.new(params[:map])
+    if current_user
+      current_user.memberships.create(:map => @map, :level => 'owner')
+    else
+      unsaved_maps << @map
+    end
+    if @map.save
+      respond_with @map, :include => :waypoints
+    else
+      respond_with @map.errors
+    end
   end
   
   # overview of the hunt

@@ -5,7 +5,7 @@ class Map < ActiveRecord::Base
   
   has_many :waypoints, :order => :position
   
-  before_validation :auto_generate_name, :on => :create
+  before_validation :auto_generate_name, :on => :create, :unless => :named?
   
     def total_distance
       Waypoint.select("sum(distance) as total_distance").where({:map_id => self.id}).first.total_distance
@@ -22,6 +22,10 @@ class Map < ActiveRecord::Base
     
     def start_location
       self.waypoints.first
+    end
+    
+    def named?
+      self.name.present?
     end
   
   protected

@@ -21,11 +21,23 @@ class ApplicationController < ActionController::Base
     @unsaved_maps ||= []
   end
   
+  def clear_unsaved_maps!
+    @unsaved_maps = []
+  end
+  
   def manage_unsaved_maps
     session[:map_ids] ||= []
     @unsaved_maps = session[:map_ids].empty? ? [] : Map.where(:id => session[:map_ids].compact)
+    assign_session_maps_to_user(current_user) if current_user?
     yield
     session[:map_ids] = @unsaved_maps.collect { |map| map.id }
+  end
+  
+  def assign_session_maps_to_user(user)
+    unsaved_maps.each do |map|
+      user.memberships.create(:map => map, :level => 'owner' )
+    end
+    clear_unsaved_maps!
   end
   
 end
