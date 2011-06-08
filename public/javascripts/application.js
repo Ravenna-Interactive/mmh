@@ -399,3 +399,79 @@ function FormatDistance(d){
   d = Math.round(d*10)/10;
   return d;
 }
+
+var HuntDisplay = Class.create({
+  initialize:function(map_id, element_id){
+    var $this = this;
+    
+    this.waypoints = [];
+    new Ajax.Request('/maps/' + map_id + '.json', {
+      method:'GET',
+      onSuccess:function(xhr){
+        var mapdata = xhr.responseJSON;
+        $this.renderMap(mapdata);
+      }
+    })
+    this.map = new google.maps.Map($(element_id), {
+      center: new google.maps.LatLng(37.23,-95.67),
+      zoom:4,
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    });
+    this.map_path = new google.maps.Polyline({
+      map: this.map,
+      clickable:false,
+      strokeOpacity:0.5
+    });
+    
+  },
+  renderMap:function(mapdata){
+    //waypoits
+    var map = this.map;
+    var map_path = this.map_path;
+    var waypoints = mapdata;
+    var bounds = new google.maps.LatLngBounds();
+    map_path.setPath(mapdata.map.waypoints.collect(function(waypoint){
+      console.log(waypoint);
+      var ll = new google.maps.LatLng(waypoint.lat, waypoint.lng);
+      var marker = new google.maps.Marker({
+        map:map,
+        position:ll
+      });
+      bounds.extend(ll);
+      console.log("Setting up waypoint", waypoint);
+      return ll;
+    }));
+    this.map.fitBounds(bounds);
+    
+  },
+  showHunt:function(id){
+    var hunt_path = new google.maps.Polyline({
+      map:this.map,
+      clickable:false,
+      strokeOpacity:0.25,
+      strokeColor:'orange'
+    });
+    var map = this.map;
+    new Ajax.Request("/hunts/"+id+'.json', {
+      method:"GET",
+      onSuccess:function(xhr){
+        console.log("hunt data", xhr.responseJSON);
+        var positions = xhr.responseJSON.hunt.positions;
+        hunt_path.setPath(positions.collect(function(position){
+          var ll = new google.maps.LatLng(position.lat, position.lng);
+          var point = new google.maps.Circle({
+            map:map,
+            center:ll,
+            radius:0.5,
+            fillColor:'orange',
+            fillOpacity:0.75,
+            strokeColor:'orange',
+            strokeOpacity:0.5
+          });
+          return ll;
+        }));
+        console.log("The path is set");
+      }
+    })
+  }
+});

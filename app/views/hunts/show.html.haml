@@ -1,0 +1,31 @@
+.sidebar.col4
+  %h2 Hunt Details
+  %p
+    %strong Started
+    = time_ago_in_words @hunt.created_at
+    ago
+  %p
+    %strong Last Update
+    = time_ago_in_words @hunt.positions.last.recorded_at
+    ago
+  %p
+    %strong Updates
+    = @hunt.positions.count
+  %h2 Map Details
+  %p
+    %strong Name
+    = @hunt.map.name
+  %p
+    %strong Total Distance
+    = human_distance @hunt.map.total_distance
+
+.main.col12
+  #hunt-display
+
+.clear
+
+:javascript
+  
+  var h = new HuntDisplay(#{@hunt.map.id}, 'hunt-display');
+  h.showHunt(#{@hunt.id});
+  

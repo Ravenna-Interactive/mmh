@@ -492,3 +492,7 @@ ul.field-errors {
 .recent_update{width:170px;}
 
 #home_bottom_right_ad{width:300px; height:325px; padding:20px; background-color:#fff; margin-left:15px;}
+
+#hunt-display {
+  height: 600px;
+}

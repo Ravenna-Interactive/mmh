@@ -21,7 +21,15 @@
 .main.col12
   %h2 Activity
 
-  - if @timeline.empty?
+  - if @hunts.empty?
     %p All is quiet. Nothing to report.
   - else
-    %p Render the timeline
+    - @hunts.each do |hunt|
+      %div.hunt-activity
+        = image_tag hunt.map.thumbnail_image_url(:size => 75)
+        %p
+          You started hunting at
+          = time_ago_in_words hunt.created_at
+          ago.
+        %p
+          = link_to 'View Hunt', hunt
