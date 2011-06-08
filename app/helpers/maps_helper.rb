@@ -8,7 +8,7 @@ module MapsHelper
   def human_distance(distance)
     # distance is in meters, so convert first o feet
     return unless distance
-    miles = distance / 1609.344
+    miles = distance.to_f / 1609.344
     number_with_delimiter(number_with_precision(miles, :precision => 1)) + " miles" if distance
     
   end
