@@ -462,7 +462,7 @@ var HuntDisplay = Class.create({
           var point = new google.maps.Circle({
             map:map,
             center:ll,
-            radius:0.5,
+            radius:5,
             fillColor:'orange',
             fillOpacity:0.75,
             strokeColor:'orange',
