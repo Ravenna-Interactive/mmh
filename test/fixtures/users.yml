@@ -5,6 +5,7 @@ user:
   salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("fr33dom" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
+  single_access_token: ABCDEFG
   current_login_at: 2011-04-25 11:02:15
   last_login_at: 2011-04-25 11:02:15
   current_login_ip: 127.0.0.1

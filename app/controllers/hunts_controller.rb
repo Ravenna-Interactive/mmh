@@ -12,10 +12,10 @@ class HuntsController < ApplicationController
   
   def create
     # find the hunt that this hunt is for
-    @map = current_user.hunts.find(params[:map_id])
+    @map = current_user.owned_maps.find(params[:map_id])
     @hunt = @map.hunts.build(:user => current_user)
     if @hunt.save
-      respond_with @hunt
+      respond_with @hunt, :include => :positions
     else
       respond_with @hunt.errors      
     end

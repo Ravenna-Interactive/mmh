@@ -4,6 +4,7 @@ require 'military_alphabet'
 class Map < ActiveRecord::Base
   
   has_many :waypoints, :order => :position
+  has_many :hunts
   
   before_validation :auto_generate_name, :on => :create, :unless => :named?
   

@@ -9,12 +9,13 @@ class UserSessionsControllerTest < ActionController::TestCase
   end
   
   test "should log in user" do
+    user = users(:user)
     post :create, :user_session => {
-      :email => 'unclesam@us.gov',
+      :email => user.email,
       :password => 'fr33dom'
     }
     assert_redirected_to :activity
-    assert @controller.send(:current_user?), 'No user session'
+    assert_equal assigns(:user_session).user, user
   end
   
 end

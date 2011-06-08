@@ -21,7 +21,7 @@ class UsersControllerTest < ActionController::TestCase
   end
   
   test "should create new user and save maps" do
-    @request.session[:map_ids] = [maps(:beta).id]
+    @request.session[:unsaved_map_id] = maps(:beta).id
     assert_difference 'User.count' do
       post :create, :user => {
         :email => 'beaucollins@gmail.com',
@@ -31,7 +31,7 @@ class UsersControllerTest < ActionController::TestCase
     end
     @user = assigns(:user)
     assert @user
-    assert_equal 1, @user.owned_maps.length
+    assert_equal 1, @user.owned_maps.count
     
     
   end

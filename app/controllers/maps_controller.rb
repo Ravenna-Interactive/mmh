@@ -2,10 +2,10 @@ class MapsController < ApplicationController
   
   respond_to :html, :json
   before_filter :find_maps, :only => :index
-  
+
   # a list of your hunts
   def index
-    @maps = Map.find :all
+    @maps = current_user.owned_maps
     respond_with @maps, :include => :waypoints
   end
   
@@ -13,11 +13,12 @@ class MapsController < ApplicationController
   # breaking REST contract here
   def new
       
-    @map = Map.create
     if current_user
+      @map = Map.create
       current_user.memberships.create(:map => @map, :level => 'owner')
     else
-      unsaved_maps << @map
+      self.unsaved_map = Map.create unless unsaved_map
+      @map = unsaved_map
     end
     redirect_to [:edit, @map]
   end
@@ -27,7 +28,7 @@ class MapsController < ApplicationController
     if current_user
       current_user.memberships.create(:map => @map, :level => 'owner')
     else
-      unsaved_maps << @map
+      unsaved_map = @map
     end
     if @map.save
       respond_with @map, :include => :waypoints
@@ -60,7 +61,7 @@ class MapsController < ApplicationController
       if current_user
         @maps = current_user.maps
       else
-        @maps = unsaved_maps
+        @maps = [unsaved_map].compact
       end
     end
     
@@ -68,8 +69,8 @@ class MapsController < ApplicationController
       if current_user
         @map = current_user.owned_maps.find(params[:id])
       else
-        @map = unsaved_maps.detect { |map| map.id.to_s == params[:id].to_s  }
+        @map = unsaved_map
       end
     end
-  
+    
 end

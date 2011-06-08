@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110517231138) do
+ActiveRecord::Schema.define(:version => 20110607225645) do
 
   create_table "hunts", :force => true do |t|
     t.integer  "map_id"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20110517231138) do
     t.integer  "failed_login_count"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "single_access_token"
   end
 
   create_table "waypoints", :force => true do |t|
