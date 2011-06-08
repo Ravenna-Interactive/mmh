@@ -7,7 +7,7 @@ class Hunt < ActiveRecord::Base
   belongs_to :user
   
   # the path/route this session took
-  has_many :positions, :order => :created_at
+  has_many :positions, :order => :recorded_at
   
   # the notes/photos/videos made along the way
   has_many :notes, :order => :created_at

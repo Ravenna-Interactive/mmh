@@ -8,6 +8,7 @@ class HuntsController < ApplicationController
   def show
     @hunt = current_user.hunts.find(params[:id])
     @map = @hunt.map
+    respond_with @hunt, :include => :positions
   end
   
   def create
