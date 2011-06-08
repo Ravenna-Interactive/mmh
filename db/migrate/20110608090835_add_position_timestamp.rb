@@ -1,6 +1,6 @@
 class AddPositionTimestamp < ActiveRecord::Migration
   def self.up
-    add_column :positions, :timestamp, :datetime
+    add_column :positions, :timestamp, :integer
     
     Position.update_all("timestamp = created_at")
   end
