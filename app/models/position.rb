@@ -2,4 +2,5 @@
 # updates that come from the iPhone client
 class Position < ActiveRecord::Base
   belongs_to :hunt
+    
 end
