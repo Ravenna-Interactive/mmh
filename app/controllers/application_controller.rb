@@ -33,14 +33,14 @@ class ApplicationController < ActionController::Base
   
   def manage_unsaved_map
     session[:unsaved_map_id] ||= nil
-    @unsaved_map = Map.find_by_id(session[:unsaved_map_id])
+    @unsaved_map = Map.find_by_id(session[:unsaved_map_id]) if session[:unsaved_map_id]
     assign_session_map_to_user(current_user) if current_user?
     yield
     session[:unsaved_map_id] = unsaved_map.id if unsaved_map
   end
   
   def assign_session_map_to_user(user)
-    user.memberships.create :map => unsaved_map, :level => 'owner'
+    user.memberships.create :map => unsaved_map, :level => 'owner' if unsaved_map
     clear_unsaved_map!
   end
       

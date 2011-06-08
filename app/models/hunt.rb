@@ -11,4 +11,11 @@ class Hunt < ActiveRecord::Base
   
   # the notes/photos/videos made along the way
   has_many :notes, :order => :created_at
+  
+  def add_positions(location_data)
+    location_data.collect { |location|
+      self.positions.create(location)
+    }
+  end
+  
 end

@@ -25,6 +25,7 @@ module Authlogic
         private
           def persist_by_api_key
             return false if !api_key_enabled?
+            Rails.logger.debug "Logging in with api key: #{api_key_credentials}"
             self.unauthorized_record = search_for_record("find_by_single_access_token", api_key_credentials)
             self.single_access = valid?
           end

@@ -18,7 +18,13 @@ Huntapp::Application.routes.draw do
     resources :hunts, :only => [:new, :index, :create]
   end
   
-  resources :hunts, :only => [:show, :updates, :destroy]
+  resources :hunts, :only => [:show, :updates, :destroy] do
+    member do
+      post 'sync'
+    end
+  end
+  
+  resources :positions, :only => [:show]
   
   resources :users, :only => [:new, :create]
   match "signup" => 'users#new', :as => :signup

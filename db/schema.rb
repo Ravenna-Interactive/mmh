@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110607225645) do
+ActiveRecord::Schema.define(:version => 20110608090835) do
 
   create_table "hunts", :force => true do |t|
     t.integer  "map_id"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20110607225645) do
     t.integer  "hunt_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "timestamp"
   end
 
   create_table "users", :force => true do |t|

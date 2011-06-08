@@ -24,17 +24,19 @@ class HuntsController < ApplicationController
   
   # post progress to a hunt
   # look up the hunt
-  # TODO: make sure the hunt belongs to the current user
-  def progress
+  def sync
     @hunt = current_user.hunts.find(params[:id])
-    @locations = @hunt.add_locations params[:locations]
+    @positions = @hunt.add_positions params[:positions]
     
     # TODO: we need a way of getting note attachment data through JSON
-    @notes = @hunt.add_notes params[:notes]
+    # @notes = @hunt.add_notes params[:notes]
     # attach the notes and locations to the hunt
     
     # return a hash of the locations and notes in the same order that they were sent
-    respond_with({ 'notes' => @notes, 'locations' => @locations })
+    logger.debug "We have positions right? #{@positions}"
+    respond_to do |format|
+      format.json { render :json => { 'positions' => @positions } }
+    end
     
   end
   
