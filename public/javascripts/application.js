@@ -2,7 +2,7 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
-Map = Class.create({
+var Map = Class.create({
   initialize:function(id, settings){
     settings = Object.extend( { }, settings );
     this.id = id;
@@ -21,7 +21,15 @@ Map = Class.create({
     this.next_waypoint =  new Waypoint({
       hunt_map:this
     });
+    this.overlay = new MarkOverlay(this.map);
     
+    var app = this;
+    
+    google.maps.event.addListener(map, 'click', function(event) {
+      console.log("Clicked", event);
+      var ll = event.latLng;
+      app.addWaypoint(ll);
+    });    
     this.rename_form = new Element('div', {id:'waypoint_rename_form'});
     this.rename_form.insert('<input type="text" value="" >\
     <a class="submit" href="#">Ok</a>\
@@ -221,7 +229,7 @@ Waypoint = Class.create({
     this.hunt_map = settings.hunt_map;
     this.map = settings.map
     
-    var marker_image = new google.maps.MarkerImage('/images/marker.png')
+    var marker_image = new google.maps.MarkerImage('/images/waypoint-marker.png', new google.maps.Size(16, 16), new google.maps.Point(0,0), new google.maps.Point(8,8));
     
     this.marker = new google.maps.Marker({
       map:this.map,
@@ -338,7 +346,7 @@ Waypoint = Class.create({
       method:'delete'
     });
     
-    this.getListItem().remove();
+    if (this.getListItem()) this.getListItem().remove();
   },
   getListItem:function(){
     return $('waypoint_' + this.attributes.id);
@@ -355,8 +363,9 @@ Waypoint = Class.create({
     content.insert(info);
     content.insert(trash);
     trash.observe('click', (function(e){ e.preventDefault(); this.hunt_map.removeWaypoint(this) }).bind(this));
-    this.hunt_map.infoWindow.setContent(content);
-    this.hunt_map.infoWindow.open(this.map, this.marker);
+    console.log("Setting waypoint", this, this.marker);
+    this.hunt_map.overlay.setWaypoint(this);
+    // this.hunt_map.everlay.open(this.map, this.marker);
   }
 })
 
@@ -371,6 +380,12 @@ var WaypointTemplate = new Template(
     </div>\
   </div>'
 );
+
+function FormatLatLng(latlng){
+  var lat = latlng.lat();
+  var lng = latlng.lng();
+  return( Math.round(lat * 10000)/10000) + ', ' + (Math.round(lng * 10000)/10000);
+}
 
 function FormatHeading(h){
   if (h < 0) h = h + 360;
@@ -396,8 +411,8 @@ function FormatHeading(h){
 }
 
 function FormatDistance(d){
-  d = Math.round(d*10)/10;
-  return d;
+  d = Math.round(d/160.9344)/10;
+  return d + ' miles';
 }
 
 var HuntDisplay = Class.create({
@@ -475,3 +490,88 @@ var HuntDisplay = Class.create({
     })
   }
 });
+
+
+function MarkOverlay(map) {
+  
+  this.map_ = map;
+  this.div_ = null;
+    
+}
+MarkOverlay.prototype = new google.maps.OverlayView();
+
+MarkOverlay.prototype.setWaypoint = function(waypoint){
+  this.waypoint_ = waypoint;
+  
+  
+  if(!waypoint){
+    this.setMap(null);
+    return;
+  }
+  if (this.move_listener) { google.maps.event.removeListener(this.move_listener)};
+  this.move_listener = google.maps.event.addListener(this.waypoint_.marker, 'position_changed', this.draw.bind(this));
+  
+  if(this.getMap()){
+    this.draw();
+  }else{
+    this.setMap(this.map_);
+  }
+  this.getMap().panTo(this.waypoint_.marker.getPosition());
+  
+}
+
+MarkOverlay.prototype.onAdd = function(){
+  var overlay = this;
+  var waypoint = this.waypoint_;
+  var div = new Element('div')
+              .setStyle({
+                position: 'absolute',
+                width: '250px',
+                height: '120px'
+              })
+              .update("<div class='waypoint-overlay-top'></div><div class='waypoint-overlay-content'></div><div class='waypoint-overlay-bottom'></div><div class='waypoint-overlay-close'></div><div class='waypoint-delete-button'>Delete</div>");
+  var close_button = div.select('.waypoint-overlay-close').first();
+  close_button.observe('click', function(e){
+    e.preventDefault();
+    overlay.setWaypoint(null);
+  });
+  
+  var delete_button = div.select('.waypoint-delete-button').first();
+  delete_button.observe('click', function(e){
+    e.preventDefault();
+    waypoint.hunt_map.removeWaypoint(waypoint);
+    overlay.setWaypoint(null);
+  });
+  div.observe('click', function(e){
+    e.preventDefault();
+  });
+  this.div_ = div;
+  
+  var panes = this.getPanes();
+  panes.floatPane.appendChild(div);
+}
+
+MarkOverlay.prototype.onRemove = function(){
+  google.maps.event.removeListener(this.move_listener)
+  this.div_.parentNode.removeChild(this.div_);
+  this.div_ = null;
+}
+
+MarkOverlay.prototype.draw = function(){
+  var proj = this.getProjection();
+  var marker = this.waypoint_.marker;
+  var waypoint = this.waypoint_;
+  var position = proj.fromLatLngToDivPixel(marker.getPosition());
+  
+  var position_label = "<div class='overlay-detail waypoint-overlay-position'><span>Position</span> " + FormatLatLng(marker.getPosition()) + "</div>";
+  var heading_label = "<div class='overlay-detail waypoint-overlay-heading'><span>Heading</span> " + FormatHeading(waypoint.attributes.heading) + "</div>";
+  var distance_label = "<div class='overlay-detail waypoint-overlay-distance'><span>Distance</span> " + FormatDistance(waypoint.attributes.distance) + "</div>";
+  
+  this.div_.select('.waypoint-overlay-content').first().update(position_label + heading_label + distance_label);
+  
+  this.div_.setStyle({
+    top: (position.y - 130) + 'px',
+    left: (position.x - 47) + 'px'
+  }); //.find('.showroom-overlay-content').empty().append(this.vcard_.clone());
+}
+

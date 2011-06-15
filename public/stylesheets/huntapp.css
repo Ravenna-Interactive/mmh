@@ -158,9 +158,9 @@ div.limiter {
 
 #hunt_map {
   position:absolute;
-  top:0;
+  top:32px;
   right:0;
-  left:300px;
+  left:0;
   bottom:0;
 }
 
@@ -495,4 +495,98 @@ ul.field-errors {
 
 #hunt-display {
   height: 600px;
+}
+
+#hunt_toolbar {
+  position:absolute;
+  background:#000;
+  top:0;
+  left:0;
+  right:0;
+  height:32px;
+  line-height: 32px;
+}
+
+.location-search-field-container {
+  float:left;
+  margin-left: 10px;
+}
+
+/* Overlay */
+
+.waypoint-overlay-top {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height: 6px;
+  background:url(../images/waypoint-overlay-top.png);
+}
+
+.waypoint-overlay-bottom {
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:20px;
+  background:url(../images/waypoint-overlay-bottom.png);
+  
+}
+
+.waypoint-overlay-content {
+  position:absolute;
+  top:6px;
+  bottom:20px;
+  right:0;
+  left:0;
+  background:url(../images/waypoint-overlay.png);
+  padding: 15px;
+}
+
+.waypoint-overlay-close {
+  position:absolute;
+  top:0;
+  right:0;
+  width: 23px;
+  height: 23px;
+  background:urL(../images/waypoint-overlay-close.png);
+  cursor:pointer;
+}
+
+.waypoint-overlay-close:hover {
+  background-position: -23px 0;
+}
+
+.overlay-detail {
+  color:#FFF;
+  font-size:12px;
+  clear:both;
+}
+
+.overlay-detail span {
+  font-weight:bold;
+  opacity:0.8;
+  float:left;
+  width:70px;
+}
+
+.waypoint-delete-button {
+  position:absolute;
+  right:10px;
+  left:10px;
+  bottom:20px;
+  padding: 5px 20px;
+  color:#FFF;
+  text-align:center;
+  font-size:12px;
+  background:#000;
+  border-radius:1em;
+  -webkit-border-radius:1em;
+  -moz-border-radius:1em; 
+  cursor:pointer;
+  text-transform:uppercase;
+}
+
+.waypoint-delete-button:hover {
+  background-color: #E5601A;
 }

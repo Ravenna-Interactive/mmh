@@ -6,38 +6,9 @@
   <%= link_to 'Sign Up', signup_path %> or <%= link_to 'Log In', signin_path %> to save this map!
 </div>
 <%- end -%>
-<div id="hunt_sidebar">
-  <div class="panel">
-    <h2><%= @map.name %></h2>
-    <div class="hunt_meta">
-      Total Distance: <span class="hunt_distance"><%= distance_in_meters @map.total_distance %></span>
-    </div>
-  </div>
-  <div class="panel">
-    <h3>Waypoints</h3>
-    <%= link_to '+', [:new, @map, :waypoint], :title => 'Add Waypoint', :id => 'new_waypoint' %>
-    <div id="waypoint_list">
-    <%- @map.waypoints.each do |waypoint| -%>
-    <div class="waypoint" id="waypoint_<%= waypoint.id %>">
-      <div class="name"><%= waypoint.name %></div>
-      <div class="next_waypoint">
-      <%- if @map.waypoints.last != waypoint -%>
-        Next
-        <span class="distance"><%= distance_in_meters waypoint.distance %></span> at
-        <span class="heading"><%= heading waypoint.heading %> <%= heading_name waypoint.heading %></span>
-      <%- else -%>
-        Final Waypoint
-      <%- end -%>
-      </div>
-      <div class="waypoint_options">
-        <%= link_to 'Rename', waypoint_path(waypoint), :class => 'rename' %>
-      </div>
-    </div>
-    <%- end -%>
-    </div>
-  </div>
+<div id="hunt_toolbar">
+  <div class="location-search-field-container"><input type="text" id="location-search-field"> <button id="location-search-submit">Search</button></div>
 </div>
-
 <div id="hunt_map">
 </div>
 
@@ -46,31 +17,50 @@
   var map = new google.maps.Map($('hunt_map'), {
     center: new google.maps.LatLng(37.23,-95.67),
     zoom:4,
-    mapTypeId: google.maps.MapTypeId.TERRAIN
+    mapTypeId: google.maps.MapTypeId.TERRAIN,
+    streetViewControl: false
   });
   
-  var map = new Map(<%= @map.id %>, { map:map, waypoint_list: $('waypoint_list') });
+  var hunt_map = new Map(<%= @map.id %>, { map:map, waypoint_list: $('waypoint_list') });
   
   var current_waypoint;
   
-  $('new_waypoint').observe('click', function(e){
-    e.preventDefault();
-    if(!map.editing) map.startAddWayPoint();
-  });
   
+  // $('new_waypoint').observe('click', function(e){
+  //   e.preventDefault();
+  //   if(!map.editing) map.startAddWayPoint();
+  // });
+  // 
   document.observe('keydown', function(e){
-    if(map.ignore_shortcuts) return;
-    if (e.which == 65 && !map.editing) {
-      e.preventDefault();
-      map.startAddWayPoint();
-      map.closeWindow();
-    }else if(e.which == 27) {
-      if(map.editing) map.endAddWayPoint();
-      map.closeWindow();
-    }else if(e.which == 82){
-      map.fitMap();
+    if(e.which == 82){
+      hunt_map.fitMap();
     }
   })
+  
+  
+  var geocoder = new google.maps.Geocoder();
+  var field = $('location-search-field');
+  var button = $('location-search-submit');
+  var search_function = function(){
+    console.log("We whould search", field.getValue());
+    var address = field.getValue();
+    geocoder.geocode({'address' : address, 'region' : 'US'}, function(results, status){
+      console.log(results, status);
+      if (status == google.maps.GeocoderStatus.OK) {
+        // map.setCenter(results[0].geometry.location);
+        map.fitBounds(results[0].geometry.bounds);
+      };
+    });
+  }
+  
+  
+  
+  $('location-search-submit').observe('click', search_function);
+  $('location-search-field').observe('keypress', function(e){
+    if (e.which == Event.KEY_RETURN) {
+      search_function();
+    };
+  });
   
   
 </script>
