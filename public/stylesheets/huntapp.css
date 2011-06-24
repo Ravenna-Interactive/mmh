@@ -590,3 +590,71 @@ ul.field-errors {
 .waypoint-delete-button:hover {
   background-color: #E5601A;
 }
+
+.map-list-item {
+  margin:0 -14px;
+  border-top:1px solid #EEE;
+  border-bottom:1px solid #FFF;
+}
+
+.map-list-item a {
+  padding:10px 14px;
+  display:block;
+  text-decoration:none;
+  text-shadow: 0 1px 0 rgba(255,255,255,1.0);
+  line-height:1.4;
+}
+
+.map-list-item a:hover {
+  background:#EEE;
+  background:-webkit-gradient(linear, left top, left bottom, from(#FFF), to(#EEE));
+}
+
+.map-list-item img {
+  display:block;
+}
+
+.map-list-item .map-name {
+  display:block;
+  font-weight:bold;
+}
+
+.map-list-item .map-stats {
+  font-size:12px;
+  color:#333;
+}
+
+.toolbar-button {
+  float:left;
+}
+
+.toolbar-button a {
+  text-decoration:none;
+  font-weight:bold;
+  display:block;
+  font-size:12px;
+  padding:0  10px;
+  background:#555;
+  border-radius:5px;
+  line-height:26px;
+  margin-top:3px;
+}
+.toolbar-button a:hover {
+  text-decoration:none;
+  font-weight:bold;
+  display:block;
+  font-size:12px;
+  padding:0  10px;
+  background:#555;
+  border-radius:5px;
+  line-height:26px;
+  margin-top:3px;
+  color:#FFF;
+  background:#999;
+}
+
+
+.map-destroy {
+  float:right;
+  margin-right:5px;
+}

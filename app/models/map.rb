@@ -14,9 +14,10 @@ class Map < ActiveRecord::Base
     
     def thumbnail_image_url(options = {})
       options.reverse_merge!(
-        :size => 50
+        :size => [50,50]
       )
-      size = "#{options[:size]}x#{options[:size]}"
+      options[:size] = [options[:size], options[:size]] unless options[:size].kind_of?(Array)
+      size = "#{options[:size].first}x#{options[:size].last}"
       location = "#{start_location.lat},#{start_location.lng}" if self.start_location.present?
       "http://maps.google.com/maps/api/staticmap?center=#{location}&zoom=12&size=#{size}&maptype=terrain&sensor=false"
     end

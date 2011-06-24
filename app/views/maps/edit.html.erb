@@ -8,6 +8,9 @@
 <%- end -%>
 <div id="hunt_toolbar">
   <div class="location-search-field-container"><input type="text" id="location-search-field"> <button id="location-search-submit">Search</button></div>
+  <div class="toolbar-button map-destroy">
+    <%= link_to 'Delete Map', @map, :method => :delete, :confirm => 'Are you sure?' %>
+  </div>
 </div>
 <div id="hunt_map">
 </div>

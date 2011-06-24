@@ -6,6 +6,8 @@ class Hunt < ActiveRecord::Base
   belongs_to :map
   belongs_to :user
   
+  scope :recent, :order => 'finished_at DESC, created_at DESC'
+  
   # the path/route this session took
   has_many :positions, :order => :recorded_at
   

@@ -43,7 +43,15 @@ class MapsController < ApplicationController
   # show the notes on the map
   def show
     find_map
-    respond_with @map, :include => :waypoints
+    respond_to do |format|
+      format.html do
+        redirect_to [:edit, @map]
+      end
+      format.any(:json, :xml) do
+        respond_with @map, :include => :waypoints
+      end
+    end
+
   end
     
   # edit the hunt details/waypoints
@@ -53,6 +61,14 @@ class MapsController < ApplicationController
     find_map
     respond_with @map, :include => :waypoints
   end
+  
+  
+  def destroy
+    find_map
+    @map.destroy
+    respond_with @map
+  end
+  
   
   protected
     

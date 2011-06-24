@@ -1,1 +1,66 @@
-<!-- Activity for the hunt -->
+<div id="location">
+  <%= link_to '<< Maps', maps_path %>
+</div>
+<%- unless current_user? -%>
+<div id="login-notice">
+  <%= link_to 'Sign Up', signup_path %> or <%= link_to 'Log In', signin_path %> to save this map!
+</div>
+<%- end -%>
+<div id="hunt_toolbar">
+  <div class="location-search-field-container"><input type="text" id="location-search-field"> <button id="location-search-submit">Search</button></div>
+</div>
+<div id="hunt_map">
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  // by default let's center on the US
+  var map = new google.maps.Map($('hunt_map'), {
+    center: new google.maps.LatLng(37.23,-95.67),
+    zoom:4,
+    mapTypeId: google.maps.MapTypeId.TERRAIN,
+    streetViewControl: false
+  });
+  
+  var hunt_map = new Map(<%= @map.id %>, { map:map, waypoint_list: $('waypoint_list') });
+  
+  var current_waypoint;
+  
+  
+  // $('new_waypoint').observe('click', function(e){
+  //   e.preventDefault();
+  //   if(!map.editing) map.startAddWayPoint();
+  // });
+  // 
+  document.observe('keydown', function(e){
+    if(e.which == 82){
+      hunt_map.fitMap();
+    }
+  })
+  
+  
+  var geocoder = new google.maps.Geocoder();
+  var field = $('location-search-field');
+  var button = $('location-search-submit');
+  var search_function = function(){
+    console.log("We whould search", field.getValue());
+    var address = field.getValue();
+    geocoder.geocode({'address' : address, 'region' : 'US'}, function(results, status){
+      console.log(results, status);
+      if (status == google.maps.GeocoderStatus.OK) {
+        // map.setCenter(results[0].geometry.location);
+        map.fitBounds(results[0].geometry.bounds);
+      };
+    });
+  }
+  
+  
+  
+  $('location-search-submit').observe('click', search_function);
+  $('location-search-field').observe('keypress', function(e){
+    if (e.which == Event.KEY_RETURN) {
+      search_function();
+    };
+  });
+  
+  
+</script>

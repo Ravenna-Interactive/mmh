@@ -1,17 +1,16 @@
 .sidebar.col4
-  %h2 Your Hunts
-  %p You haven't hunted yet.
   %h2 Your Maps
   - if current_user.owned_maps.count > 0
     %ul
       - current_user.owned_maps.limit(5).each do |map|
-        %li
+        %li{:class => 'map-list-item'}
           = link_to map_path(map) do
-            = image_tag map.thumbnail_image_url
-            = map.name
-            %br
-            = pluralize map.waypoints.count, 'waypoint'
-            = human_distance map.total_distance
+            %span.map-name
+              = map.name
+            = image_tag map.thumbnail_image_url(:size => [212,100])
+            %span.map-stats
+              = pluralize map.waypoints.count, 'waypoint'
+              = human_distance map.total_distance
       - if current_user.owned_maps.count > 5
         %li
           = link_to 'More Maps', '#'
@@ -28,9 +27,13 @@
       %div.hunt-activity
         = image_tag hunt.map.thumbnail_image_url(:size => 75)
         %p
-          You started hunting at
-          = time_ago_in_words hunt.created_at
+          started
+          = time_ago_in_words hunt.started_at
           ago.
+        - if hunt.finished_at?
+          %p
+            ended
+            = time_ago_in_words hunt.ended_at
         %p
           = link_to 'View Hunt', hunt
 .clear
