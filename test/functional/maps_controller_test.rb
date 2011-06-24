@@ -26,7 +26,7 @@ class MapsControllerTest < ActionController::TestCase
     
     @map = maps(:alpha)
     get :show, :id => @map.id
-    assert_response :success
+    assert_response :redirect
   end
   
   test "show map xhr" do

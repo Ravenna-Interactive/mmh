@@ -15,8 +15,10 @@ class HuntsControllerTest < ActionController::TestCase
     
     
     assert_difference '@user.hunts.count' do
-      post :create, :hunt => {}, :map_id => @map
+      post :create, :hunt => { :started_at => 1308946914 }, :map_id => @map, :format => :json
     end
+    
+    assert_equal response.body, nil
     
   end
 end

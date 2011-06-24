@@ -1,8 +1,8 @@
 class CreatePositions < ActiveRecord::Migration
   def self.up
     create_table :positions do |t|
-      t.decimal :lat
-      t.decimal :lng
+      t.decimal :lat, :precision => 15, :scale => 10
+      t.decimal :lng, :precision => 15, :scale => 10
       t.references :hunt
 
       t.timestamps

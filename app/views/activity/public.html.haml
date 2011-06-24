@@ -1,0 +1,21 @@
+.main.col12
+  %h2 Activity
+
+  - if @hunts.empty?
+    %p All is quiet. Nothing to report.
+  - else
+    - @hunts.each do |hunt|
+      %div.hunt-activity
+        = image_tag hunt.map.thumbnail_image_url(:size => 75)
+        %p
+          started
+          = time_ago_in_words(hunt.started_at || hunt.created_at)
+          ago.
+        - if hunt.finished_at?
+          %p
+            finished
+            = time_ago_in_words hunt.finished_at
+            ago
+        %p
+          = link_to 'View Hunt', hunt
+.clear

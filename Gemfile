@@ -5,7 +5,7 @@ gem 'acts_as_list'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+
 gem 'authlogic', :git => 'https://github.com/cmeiklejohn/authlogic.git'
 gem 'haml'
 gem 'paperclip', :git => 'https://github.com/thoughtbot/paperclip.git'
@@ -34,6 +34,8 @@ gem 'paperclip', :git => 'https://github.com/thoughtbot/paperclip.git'
 #   gem 'webrat'
 # end
 group :development, :test do
+  gem 'mysql2', '~>0.2.0'
   gem 'ZenTest'
   gem 'autotest-rails'
+  
 end

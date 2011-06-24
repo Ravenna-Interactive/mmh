@@ -1,6 +1,7 @@
 class MapsController < ApplicationController
   
   respond_to :html, :json
+  before_filter :require_user, :only => [:index]
   before_filter :find_maps, :only => :index
 
   # a list of your hunts
@@ -45,7 +46,7 @@ class MapsController < ApplicationController
     find_map
     respond_to do |format|
       format.html do
-        redirect_to [:edit, @map]
+        redirect_to edit_map_path(@map)
       end
       format.any(:json, :xml) do
         respond_with @map, :include => :waypoints

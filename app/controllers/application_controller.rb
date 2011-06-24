@@ -6,6 +6,21 @@ class ApplicationController < ActionController::Base
 
   protected
   
+  def require_user
+    unless current_user.present?
+      respond_to do |format|
+        format.html do
+          flash[:notice] = "You must be logged in"
+          redirect_to :root
+        end
+        format.any(:json, :xml) do
+          head :forbidden
+        end
+      end
+      return false
+    end
+  end
+  
   def current_user_session
     @current_user_session ||= UserSession.find
   end

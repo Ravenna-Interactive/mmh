@@ -32,8 +32,9 @@
           ago.
         - if hunt.finished_at?
           %p
-            ended
-            = time_ago_in_words hunt.ended_at
+            finished
+            = time_ago_in_words hunt.finished_at
+            ago
         %p
           = link_to 'View Hunt', hunt
 .clear

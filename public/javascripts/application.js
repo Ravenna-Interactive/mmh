@@ -445,15 +445,16 @@ var HuntDisplay = Class.create({
     var map_path = this.map_path;
     var waypoints = mapdata;
     var bounds = new google.maps.LatLngBounds();
+    var marker_image = new google.maps.MarkerImage('/images/waypoint-marker.png', new google.maps.Size(16, 16), new google.maps.Point(0,0), new google.maps.Point(8,8));
+    
     map_path.setPath(mapdata.map.waypoints.collect(function(waypoint){
-      console.log(waypoint);
       var ll = new google.maps.LatLng(waypoint.lat, waypoint.lng);
       var marker = new google.maps.Marker({
         map:map,
-        position:ll
+        position:ll,
+        icon:marker_image
       });
       bounds.extend(ll);
-      console.log("Setting up waypoint", waypoint);
       return ll;
     }));
     this.map.fitBounds(bounds);

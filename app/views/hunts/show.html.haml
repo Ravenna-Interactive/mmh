@@ -2,8 +2,13 @@
   %h2 Hunt Details
   %p
     %strong Started
-    = time_ago_in_words @hunt.created_at
+    = time_ago_in_words(@hunt.started_at || @hunt.created_at)
     ago
+  - if @hunt.finished_at?
+    %p
+      %strong Finished
+      = time_ago_in_words(@hunt.finished_at)
+      ago
   %p
     %strong Last Update
     - if @hunt.positions.last.present?

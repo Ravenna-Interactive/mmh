@@ -15,12 +15,23 @@ class HuntsController < ApplicationController
     # find the hunt that this hunt is for
     @map = current_user.owned_maps.find(params[:map_id])
     @hunt = @map.hunts.build(:user => current_user)
+    @hunt.attributes = params[:hunt]
     if @hunt.save
       respond_with @hunt, :include => :positions
     else
       respond_with @hunt.errors      
     end
     
+  end
+  
+  def update
+    @hunt = current_user.hunts.find(params[:id])
+    @hunt.attributes = params[:hunt]
+    if @hunt.save
+      respond_with @hunt
+    else
+      respond_with @hunt.errors
+    end
   end
   
   # post progress to a hunt

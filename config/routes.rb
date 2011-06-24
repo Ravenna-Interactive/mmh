@@ -18,7 +18,7 @@ Huntapp::Application.routes.draw do
     resources :hunts, :only => [:new, :index, :create]
   end
   
-  resources :hunts, :only => [:show, :updates, :destroy] do
+  resources :hunts, :only => [:show, :update, :destroy] do
     member do
       post 'sync'
     end
@@ -34,6 +34,7 @@ Huntapp::Application.routes.draw do
   match "signout" => 'user_sessions#destroy', :as => :signout, :method => :destroy
   
   match "activity" => 'activity#index', :as => :activity
+  match "live-hunts" => 'activity#public', :as => :live_hunts
   match "start-mapping" => 'maps#new'
   resources :waypoints, :except => [:new, :create]
   
