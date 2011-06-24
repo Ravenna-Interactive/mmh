@@ -28,7 +28,7 @@
         = image_tag hunt.map.thumbnail_image_url(:size => 75)
         %p
           started
-          = time_ago_in_words hunt.started_at
+          = time_ago_in_words(hunt.started_at || hunt.created_at)
           ago.
         - if hunt.finished_at?
           %p
