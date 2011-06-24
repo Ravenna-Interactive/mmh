@@ -6,8 +6,11 @@
     ago
   %p
     %strong Last Update
-    = time_ago_in_words @hunt.positions.last.recorded_at
-    ago
+    - if @hunt.positions.last.present?
+      = time_ago_in_words @hunt.positions.last.recorded_at
+      ago
+    - else
+      no updates yet
   %p
     %strong Updates
     = @hunt.positions.count
