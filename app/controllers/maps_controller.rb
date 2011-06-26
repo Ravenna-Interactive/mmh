@@ -27,7 +27,7 @@ class MapsController < ApplicationController
   def create
     @map = Map.new(params[:map])
     if current_user
-      current_user.memberships.create(:map => @map, :level => 'owner')
+      current_user.memberships.create(:map => @map, :level => 'owner') unless current_user.owned_maps.include?(@map)
     else
       unsaved_map = @map
     end
