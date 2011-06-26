@@ -19,8 +19,8 @@
             ago
         %p
           = link_to 'View Hunt', hunt
-  %h2 Recent Hunts
   - unless @recent.empty?
+    %h2 Recent Hunts
     - @recent.limit(5).each do |hunt|
       %div.hunt-activity
         - link_to hunt do

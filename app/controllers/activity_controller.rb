@@ -8,8 +8,8 @@ class ActivityController < ApplicationController
   end
   
   def public
-    @active = Hunt.active
-    @recent = Hunt.recent
+    @active = Hunt.recent.active
+    @recent = Hunt.recent.finished
   end
   
 end
