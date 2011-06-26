@@ -10,6 +10,7 @@ gem 'authlogic', :git => 'https://github.com/cmeiklejohn/authlogic.git'
 gem 'haml'
 gem 'paperclip', :git => 'https://github.com/thoughtbot/paperclip.git'
 gem 'googlestaticmap', :git => 'https://github.com/brentsowers1/googlestaticmap.git'
+gem 'pg'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -34,7 +35,6 @@ gem 'googlestaticmap', :git => 'https://github.com/brentsowers1/googlestaticmap.
 #   gem 'webrat'
 # end
 group :development, :test do
-  gem 'mysql2', '~>0.2.0'
   gem 'ZenTest'
   gem 'autotest-rails'
   

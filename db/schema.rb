@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(:version => 20110626165824) do
   end
 
   create_table "notes", :force => true do |t|
-    t.decimal  "lat",                     :precision => 10, :scale => 0
-    t.decimal  "lng",                     :precision => 10, :scale => 0
+    t.decimal  "lat"
+    t.decimal  "lng"
     t.integer  "hunt_id"
     t.text     "body"
     t.string   "attachment_file_name"
@@ -50,8 +50,8 @@ ActiveRecord::Schema.define(:version => 20110626165824) do
   end
 
   create_table "positions", :force => true do |t|
-    t.decimal  "lat",         :precision => 15, :scale => 10
-    t.decimal  "lng",         :precision => 15, :scale => 10
+    t.decimal  "lat"
+    t.decimal  "lng"
     t.integer  "hunt_id"
     t.datetime "created_at"
     t.datetime "updated_at"
