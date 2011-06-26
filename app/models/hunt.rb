@@ -9,11 +9,11 @@ class Hunt < ActiveRecord::Base
   belongs_to :map
   belongs_to :user
   
-  scope :recent, order('last_recorded_at DESC')
-  scope :active, where({:finished_at => nil}).order('last_recorded_at DESC')
+  scope :recent, order('last_recorded_at DESC, finished_at DESC, started_at DESC')
+  scope :active, where({:finished_at => nil})
   
   # the path/route this session took
-  has_many :positions, :order => :recorded_at, :after_add => :update_recorded_at
+  has_many :positions, :counter_cache => true, :order => :recorded_at, :after_add => :update_recorded_at
   
   # the notes/photos/videos made along the way
   has_many :notes, :order => :created_at
@@ -48,7 +48,7 @@ class Hunt < ActiveRecord::Base
     # add the markers for the map
     map_path = MapPath.new(:weight => 3, :color => "0x00000099")
     current_location = positions.order('recorded_at DESC').first
-    gmap.markers << MapMarker.new(:color => 'orange', :location => MapLocation.new(:latitude => current_location.lat , :longitude => current_location.lng ))
+    gmap.markers << MapMarker.new(:color => 'orange', :location => MapLocation.new(:latitude => current_location.lat , :longitude => current_location.lng )) if current_location.present?
     self.map.waypoints.each do |waypoint|
       location = MapLocation.new(:latitude => waypoint.lat, :longitude => waypoint.lng)
       gmap.markers << MapMarker.new(
