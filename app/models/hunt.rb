@@ -9,9 +9,13 @@ class Hunt < ActiveRecord::Base
   belongs_to :map
   belongs_to :user
   
-  scope :recent, order('last_recorded_at DESC, finished_at DESC, started_at DESC').where("positions_count > 0")
-  scope :active, where({:finished_at => nil})
-  scope :finished, where(["finished_at < ?", Time.now])
+  scope :recent, order('last_recorded_at DESC, finished_at DESC, started_at DESC').where(["positions_count > 0"])
+  scope :active, lambda {
+    where({:finished_at => nil}).where(["last_recorded_at > ?", 1.day.ago])
+  }
+  scope :finished, lambda {
+    where(["finished_at < ? OR last_recorded_at < ?", Time.now, 1.day.ago])
+  } 
   
   # the path/route this session took
   has_many :positions, :order => :recorded_at, :after_add => :update_recorded_at
