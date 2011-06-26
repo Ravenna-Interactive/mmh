@@ -658,3 +658,8 @@ ul.field-errors {
   float:right;
   margin-right:5px;
 }
+
+.hunt-activity {
+  padding:14px;
+  background:#FFF;
+}

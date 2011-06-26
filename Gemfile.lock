@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/brentsowers1/googlestaticmap.git
+  revision: 7c1f589561eb4c0858f1c27eb75be2b173bdfae0
+  specs:
+    googlestaticmap (0.1.5)
+
+GIT
   remote: https://github.com/cmeiklejohn/authlogic.git
   revision: 69995f98c7db9b9b65e6241c72593c00f1004e5e
   specs:
@@ -93,6 +99,7 @@ DEPENDENCIES
   acts_as_list
   authlogic!
   autotest-rails
+  googlestaticmap!
   haml
   mysql2 (~> 0.2.0)
   paperclip!

@@ -9,7 +9,7 @@ gem 'acts_as_list'
 gem 'authlogic', :git => 'https://github.com/cmeiklejohn/authlogic.git'
 gem 'haml'
 gem 'paperclip', :git => 'https://github.com/thoughtbot/paperclip.git'
-
+gem 'googlestaticmap', :git => 'https://github.com/brentsowers1/googlestaticmap.git'
 
 # Use unicorn as the web server
 # gem 'unicorn'

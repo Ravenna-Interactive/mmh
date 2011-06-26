@@ -8,7 +8,8 @@ class ActivityController < ApplicationController
   end
   
   def public
-    @hunts = Hunt.recent.limit(5)
+    @active = Hunt.active
+    @recent = Hunt.recent
   end
   
 end

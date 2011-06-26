@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110624180308) do
+ActiveRecord::Schema.define(:version => 20110626165824) do
 
   create_table "hunts", :force => true do |t|
     t.integer  "map_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20110624180308) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "started_at"
+    t.datetime "last_recorded_at"
   end
 
   create_table "maps", :force => true do |t|
