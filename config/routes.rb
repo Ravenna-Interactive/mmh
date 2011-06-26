@@ -1,4 +1,6 @@
 Huntapp::Application.routes.draw do
+  resources :static_pages
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

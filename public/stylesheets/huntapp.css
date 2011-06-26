@@ -19,6 +19,7 @@ body {
   font: 12px Arial, sans-serif;
   line-height:16px;
   background: #14200B;
+  width:100%;
 }
 
 a {color: #E5601A;}
@@ -28,6 +29,8 @@ a {color: #E5601A;}
 .ad_space{background-color:#666;}
 .bold{font-weight:bold;}
 .orange{color:#e86100;}
+
+.field{margin-bottom:15px;}
 
 /* Columns */
 div.limiter {
@@ -43,7 +46,7 @@ div.limiter {
 
 #header, #footer {
   height: 140px;
-  min-width: 960px;
+  width:100%;
   background: url(../images/header_trees.jpg) repeat-x;
 }
 
@@ -474,7 +477,7 @@ ul.field-errors {
 /* FOOTER */
 
 #footer_bg{width:100%; height:140px; background:url(images/header_trees.jpg) repeat-x;}
-#footer{width:480px; margin:0 auto;}
+.footer_list_first{padding-left:300px;}
 .footer_list{width:120px; margin:30px 40px 0 0;}
 .footer_list li{padding-bottom:5px; font-size:11px; color:#fff;}
 .footer_list li a{color:#fff;}

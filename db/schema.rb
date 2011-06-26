@@ -59,6 +59,14 @@ ActiveRecord::Schema.define(:version => 20110626165824) do
     t.datetime "recorded_at"
   end
 
+  create_table "static_pages", :force => true do |t|
+    t.string   "name"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "url_alias"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "salt"
