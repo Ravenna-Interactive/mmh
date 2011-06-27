@@ -51,20 +51,20 @@ class Hunt < ActiveRecord::Base
     gmap = GoogleStaticMap.new(:width => options[:width], :height => options[:height])
     
     # add the markers for the map
-    map_path = MapPath.new(:weight => 3, :color => "0x00000099")
+    # map_path = MapPath.new(:weight => 3, :color => "0x00000099")
     current_location = positions.reorder('recorded_at DESC').first
     gmap.markers << MapMarker.new(:color => 'orange', :location => MapLocation.new(:latitude => current_location.lat , :longitude => current_location.lng )) if current_location.present?
-    self.map.waypoints.each do |waypoint|
-      location = MapLocation.new(:latitude => waypoint.lat, :longitude => waypoint.lng)
-      gmap.markers << MapMarker.new(
-        :icon => 'http://mmh.heroku.com/images/waypoint-marker.png',
-        :shadow => false,
-        :location => location,
-      )
-      map_path.points << location
-    end
-    gmap.paths << map_path
-    logger.debug "URL: #{gmap.url}"
+    # self.map.waypoints.each do |waypoint|
+    #   location = MapLocation.new(:latitude => waypoint.lat, :longitude => waypoint.lng)
+    #   gmap.markers << MapMarker.new(
+    #     :icon => 'http://mmh.heroku.com/images/waypoint-marker.png',
+    #     :shadow => false,
+    #     :location => location,
+    #   )
+    #   map_path.points << location
+    # end
+    # gmap.paths << map_path
+    # logger.debug "URL: #{gmap.url}"
     gmap.url
   end
   
