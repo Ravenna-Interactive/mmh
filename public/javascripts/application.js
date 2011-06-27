@@ -26,7 +26,6 @@ var Map = Class.create({
     var app = this;
     
     google.maps.event.addListener(map, 'click', function(event) {
-      console.log("Clicked", event);
       var ll = event.latLng;
       app.addWaypoint(ll);
     });    
@@ -62,7 +61,6 @@ var Map = Class.create({
       
       
       this.waypoint_list.observe('click', (function(e){
-        console.log("List clicked!");
         waypoint_list_item = e.target.hasClassName('waypoint') ? e.target : e.target.up('.waypoint');
         if (e.target != waypoint_list_item) {
           // doing something
@@ -363,7 +361,6 @@ Waypoint = Class.create({
     content.insert(info);
     content.insert(trash);
     trash.observe('click', (function(e){ e.preventDefault(); this.hunt_map.removeWaypoint(this) }).bind(this));
-    console.log("Setting waypoint", this, this.marker);
     this.hunt_map.overlay.setWaypoint(this);
     // this.hunt_map.everlay.open(this.map, this.marker);
   }
@@ -471,7 +468,6 @@ var HuntDisplay = Class.create({
     new Ajax.Request("/hunts/"+id+'.json', {
       method:"GET",
       onSuccess:function(xhr){
-        console.log("hunt data", xhr.responseJSON);
         var positions = xhr.responseJSON.hunt.positions;
         hunt_path.setPath(positions.collect(function(position){
           var ll = new google.maps.LatLng(position.lat, position.lng);
@@ -486,7 +482,6 @@ var HuntDisplay = Class.create({
           });
           return ll;
         }));
-        console.log("The path is set");
       }
     })
   }
