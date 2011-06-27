@@ -6,7 +6,7 @@ class HuntsController < ApplicationController
   # Pull up the map it belongs to
   # Render the hunt and the map together
   def show
-    @hunt = current_user.hunts.find(params[:id])
+    @hunt = Hunt.find(params[:id])
     @map = @hunt.map
     respond_with @hunt, :include => :positions
   end
